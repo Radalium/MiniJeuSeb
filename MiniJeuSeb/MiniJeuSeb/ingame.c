@@ -5,7 +5,6 @@
 #define DEFAULT_POS_X 300.f
 #define DEFAULT_POS_Y 500.f
 
-
 typedef struct Perso Perso;
 struct Perso
 {
@@ -90,11 +89,15 @@ void updateGame()
 	possBoule.x += circleVel.x;
 	possBoule.y += circleVel.y;
 
-	sfCircleShape_setPosition(boule, possBoule);
-
-
-		
-	
+		if (possBoule.y >= 900 * sfCircleShape_getRadius(boule))
+		{
+			circleVel.y = -circleVel.y * GetDeltaTime(); 
+		}
+		else if (possBoule.y <= 0.f)
+		{
+			circleVel.y = -circleVel.y * GetDeltaTime();
+		}
+		sfCircleShape_setPosition(boule, possBoule);
 }
 
 void displayGame(sfRenderWindow* _window, sfRectangleShape* _player, sfCircleShape* _boule)
