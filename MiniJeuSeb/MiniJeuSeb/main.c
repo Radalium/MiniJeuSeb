@@ -6,15 +6,9 @@
 #include "tools.h"
 
 
-typedef enum states {
 
-	MAINMENU,
-	INGAME,
-	PAUSE,
-	QUIT
-}states;
 
-states actualState = MAINMENU;
+ 
 
 int main() {
 
@@ -24,6 +18,7 @@ int main() {
 
 	sfEvent event;
 	initMenu();
+	actualState = MAINMENU;
 
 
 
@@ -41,9 +36,8 @@ int main() {
 			{
 				sfRenderWindow_close(window);
 			}
-			 
-
 		}
+		sfRenderWindow_clear(window, sfBlack);
 		
 		if (actualState == MAINMENU) {
 			updateMenu();
@@ -59,7 +53,11 @@ int main() {
 
 		}
 
-		sfRenderWindow_clear(window, sfBlack);
+		
+
+
+
+	
 		sfRenderWindow_display(window);
 	}
 }
