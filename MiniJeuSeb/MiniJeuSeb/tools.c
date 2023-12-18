@@ -1,6 +1,5 @@
 #include "tools.h"
 
-
 sfTime sftime;
 sfClock* sfclock;
 
@@ -10,12 +9,6 @@ void initTools()
 	srand(time(NULL));
 }
 
-void restartClock()
-{
-	sftime = sfClock_restart(sfclock);
-}
+void restartClock(){sftime = sfClock_restart(sfclock);}
 
-float GetDeltaTime()
-{
-	return sfTime_asSeconds(sftime);
-}
+float GetDeltaTime(){return sfTime_asSeconds(sftime);}

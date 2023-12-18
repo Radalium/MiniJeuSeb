@@ -5,7 +5,6 @@
 #define DEFAULT_POS_X 300.f
 #define DEFAULT_POS_Y 500.f
 
-
 typedef struct Perso Perso;
 struct Perso
 {
@@ -63,9 +62,6 @@ void updateGame()
 			circleVel.y = -circleVel.y * GetDeltaTime();
 		}
 		sfCircleShape_setPosition(boule, possBoule);
-
-		printf("%f\n", possBoule);
-	
 }
 
 void displayGame(sfRenderWindow* _window, sfRectangleShape* _player, sfCircleShape* _boule)

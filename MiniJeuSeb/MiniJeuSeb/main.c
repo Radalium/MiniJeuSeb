@@ -18,7 +18,6 @@ int main() {
 	initGame();
 
 	actualState = INGAME;
-
 	//boucle de jeu
 	while (sfRenderWindow_isOpen(window))
 	{
@@ -27,14 +26,8 @@ int main() {
 		
 		while (sfRenderWindow_pollEvent(window, &event))
 		{
-			if (event.type == sfEvtClosed)
-			{
-				sfRenderWindow_close(window);
-			}
-
-		//update
+			if (event.type == sfEvtClosed){sfRenderWindow_close(window);}
 		} 
-
 		sfRenderWindow_clear(window, sfBlack);
 		
 		if (actualState == MAINMENU) {
@@ -43,11 +36,8 @@ int main() {
 		}
 		else if (actualState == INGAME)  {
 			updateGame();
-
 			displayGame(window, player, boule);
-
 			displayMap(window, enemie);
-
 		}
 		else if (actualState == PAUSE) {
 
@@ -55,7 +45,6 @@ int main() {
 		else if (actualState == QUIT) {
 
 		}
-
 		sfRenderWindow_display(window);
 	}
 }
