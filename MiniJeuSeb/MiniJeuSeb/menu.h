@@ -8,3 +8,4 @@ void updateMenu();
 void displayMenu(sfRenderWindow* _window );
 
 
+sfText* text;

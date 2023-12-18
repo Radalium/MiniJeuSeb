@@ -3,6 +3,16 @@
 #include "tools.h"
 #include "SFML/Graphics.h"
 
+typedef enum states {
+
+	MAINMENU,
+	INGAME,
+	PAUSE,
+	QUIT
+}states;
+
+states actualState = MAINMENU;
+
 int main() {
 
 	sfVideoMode mode = { 600, 900, 32 };
@@ -26,7 +36,19 @@ int main() {
 				sfRenderWindow_close(window);
 			}
 		}
-		// update 
+		
+		if (actualState == MAINMENU) {
+
+		}
+		else if (actualState == INGAME) {
+
+		}
+		else if (actualState == PAUSE) {
+
+		}
+		else if (actualState == QUIT) {
+
+		}
 
 		sfRenderWindow_clear(window, sfBlack);
 		sfRenderWindow_display(window);
