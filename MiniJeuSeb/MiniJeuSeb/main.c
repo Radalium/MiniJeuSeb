@@ -17,7 +17,7 @@ int main() {
 	initTools();
 	initGame();
 
-	actualState = INGAME;
+	actualState = MAINMENU;
 
 	//boucle de jeu
 	while (sfRenderWindow_isOpen(window))
@@ -44,9 +44,9 @@ int main() {
 		else if (actualState == INGAME)  {
 			updateGame();
 
-			displayGame(window, player, boule);
 
 			displayMap(window, enemie);
+			displayGame(window, player, boule);
 
 		}
 		else if (actualState == PAUSE) {
