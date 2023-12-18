@@ -35,6 +35,8 @@ void initGame()
 	sfVector2f tailleEnemie = { 85.f,20.f };
     enemie = sfRectangleShape_create(); 
 	sfRectangleShape_setSize(enemie, tailleEnemie);  
+
+	
 }
 
 void updateGame()
@@ -50,7 +52,41 @@ void updateGame()
 		sfRectangleShape_setPosition(player, joueur.pos);
 	}
 
-	//possBoule.x += circleVel.x;
+	if (sfCircleShape_getPosition(boule).x >= 600 - 2 * sfCircleShape_getRadius(boule))
+	{
+		circleVel.x = -circleVel.x * GetDeltaTime();
+	}
+	else if (sfCircleShape_getPosition(boule).x <= 0.f)
+	{
+		circleVel.x = -circleVel.x * GetDeltaTime();
+	}
+	
+	else if (sfCircleShape_getPosition(boule).y >= 900 - 2 * sfCircleShape_getRadius(boule))
+	{
+		circleVel.y = -circleVel.y * GetDeltaTime();
+	}
+	else if (sfCircleShape_getPosition(boule).y <= 0.f)
+	{
+		circleVel.y = -circleVel.y * GetDeltaTime();
+	}
+
+	sfFloatRect bouleBox = sfCircleShape_getGlobalBounds(boule);
+	sfFloatRect playerBox = sfRectangleShape_getGlobalBounds(player);
+	sfFloatRect enemierect = sfRectangleShape_getGlobalBounds(enemie);
+
+
+	if (sfFloatRect_intersects(&bouleBox, &playerBox, NULL))
+	{
+		circleVel.y = -circleVel.y;
+	}
+
+	if (sfFloatRect_intersects(&bouleBox, &enemierect, NULL))
+	{
+		circleVel.y = -circleVel.y;
+	}
+
+
+	possBoule.x += circleVel.x;
 	possBoule.y += circleVel.y;
 
 		if (possBoule.y >= 900 * sfCircleShape_getRadius(boule))

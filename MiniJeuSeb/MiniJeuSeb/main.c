@@ -36,8 +36,9 @@ int main() {
 		}
 		else if (actualState == INGAME)  {
 			updateGame();
-			displayGame(window, player, boule);
 			displayMap(window, enemie);
+			displayGame(window, player, boule);
+
 		}
 		else if (actualState == PAUSE) {
 
