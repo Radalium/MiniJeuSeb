@@ -53,18 +53,17 @@ void updateGame()
 	printf("X: %f  Y: %f\n", joueur.pos.x, joueur.pos.y);  
 
 
-	if (sfKeyboard_isKeyPressed(sfKeySpace))
-	{
+
 		if (possBoule.y > 0.f)
 		{
 			possBoule.y -= velocityboulle * GetDeltaTime();
 		}
-		else if (possBoule.y < 0.f)
+		else if (possBoule.y < 900.f)
 		{
-			possBoule.y -= -velocityboulle * GetDeltaTime();
+			possBoule.y += velocityboulle * GetDeltaTime();
 		}
 		sfCircleShape_setPosition(boule, possBoule);
-	}
+	
 
 	
 
