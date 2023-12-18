@@ -41,13 +41,15 @@ int main() {
 			{
 				sfRenderWindow_close(window);
 			}
+			 
+
 		}
 		
 		if (actualState == MAINMENU) {
 			updateMenu();
 			displayMenu(window);
 		}
-		else if (actualState == INGAME) {
+		else if (actualState == INGAME)  {
 
 		}
 		else if (actualState == PAUSE) {
