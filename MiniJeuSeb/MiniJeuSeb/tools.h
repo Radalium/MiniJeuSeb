@@ -8,3 +8,14 @@
 void initTools();
 void restartClock();
 float GetDeltaTime();
+
+
+typedef enum states {
+
+	MAINMENU,
+	INGAME,
+	PAUSE,
+	QUIT
+}states;
+
+states actualState;

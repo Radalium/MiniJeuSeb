@@ -9,3 +9,5 @@ void displayMenu(sfRenderWindow* _window );
 
 
 sfText* text;
+
+sfSprite* logo;
