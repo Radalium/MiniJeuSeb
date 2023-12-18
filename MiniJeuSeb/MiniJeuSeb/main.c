@@ -3,6 +3,7 @@
 #include "tools.h"
 #include "SFML/Graphics.h"
 #include "menu.h"
+#include "ingame.h"
 #include "tools.h"
 
 
@@ -50,6 +51,8 @@ int main() {
 			displayMenu(window);
 		}
 		else if (actualState == INGAME)  {
+			initGame();
+			displayGame(window, player);
 
 		}
 		else if (actualState == PAUSE) {
