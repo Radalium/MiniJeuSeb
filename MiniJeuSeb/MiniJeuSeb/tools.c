@@ -1,5 +1,6 @@
 #include "tools.h"
 
+
 sfTime sftime;
 sfClock* sfclock;
 

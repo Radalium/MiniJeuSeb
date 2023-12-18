@@ -6,11 +6,6 @@
 #include "ingame.h"
 #include "tools.h"
 
-
-
-
- 
-
 int main() {
 
 	sfVideoMode mode = { 600, 900, 32 };
@@ -19,18 +14,17 @@ int main() {
 
 	sfEvent event;
 	initMenu();
-	actualState = MAINMENU;
+	initTools();
+	initGame();
 
-
+	actualState = INGAME;
 
 	//boucle de jeu
 	while (sfRenderWindow_isOpen(window))
 	{
 		//timer
-		/*restartClock();*/
-
-
-		//update
+		restartClock();
+		
 		while (sfRenderWindow_pollEvent(window, &event))
 		{
 			if (event.type == sfEvtClosed)
@@ -38,6 +32,7 @@ int main() {
 				sfRenderWindow_close(window);
 			}
 		}
+		//update
 		sfRenderWindow_clear(window, sfBlack);
 		
 		if (actualState == MAINMENU) {
@@ -45,7 +40,7 @@ int main() {
 			displayMenu(window);
 		}
 		else if (actualState == INGAME)  {
-			initGame();
+			updateGame();
 			displayGame(window, player);
 
 		}
@@ -56,11 +51,6 @@ int main() {
 
 		}
 
-		
-
-
-
-	
 		sfRenderWindow_display(window);
 	}
 }
