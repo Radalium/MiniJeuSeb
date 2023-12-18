@@ -14,27 +14,28 @@ struct Perso
 }; 
 struct Perso joueur = { 200.f,800.f,70.f,20.f };
 float velocity = 0.1f;
-float velocityboulle = 0.1f;
 float angle = 0.f;
 
 sfVector2f possBoule = { 300.f,500.f };
+sfVector2f circleVel = { 0.1f, 0.1f };
 
 void initGame()
 {
 	boule = sfCircleShape_create();
 	player = sfRectangleShape_create();  
 
-	
 	sfCircleShape_setRadius(boule, 20.f);
 	sfCircleShape_setPosition(boule, possBoule);
 	sfCircleShape_setFillColor(boule, sfWhite);
+
 	sfRectangleShape_setSize(player, (sfVector2f) { 70.f, 20.f });
 	sfRectangleShape_setPosition(player,joueur.pos);  
 	sfRectangleShape_setFillColor(player, sfWhite); 
 	sfRectangleShape_setSize(player,joueur.taille);  
 
+	sfVector2f tailleEnemie = { 85.f,20.f };
     enemie = sfRectangleShape_create(); 
-	sfRectangleShape_setSize(enemie, joueur.taille);
+	sfRectangleShape_setSize(enemie, tailleEnemie);  
 }
 
 void updateGame()
@@ -50,24 +51,21 @@ void updateGame()
 		sfRectangleShape_setPosition(player, joueur.pos);
 	}
 
-	printf("X: %f  Y: %f\n", joueur.pos.x, joueur.pos.y);  
+	//possBoule.x += circleVel.x;
+	possBoule.y += circleVel.y;
 
-
-	if (sfKeyboard_isKeyPressed(sfKeySpace))
-	{
-		if (possBoule.y > 0.f)
+		if (possBoule.y >= 900 * sfCircleShape_getRadius(boule))
 		{
-			possBoule.y -= velocityboulle * GetDeltaTime();
+			circleVel.y = -circleVel.y * GetDeltaTime(); 
 		}
-		else if (possBoule.y < 0.f)
+		else if (possBoule.y <= 0.f)
 		{
-			possBoule.y -= -velocityboulle * GetDeltaTime();
+			circleVel.y = -circleVel.y * GetDeltaTime();
 		}
 		sfCircleShape_setPosition(boule, possBoule);
-	}
 
+		printf("%f\n", possBoule);
 	
-
 }
 
 void displayGame(sfRenderWindow* _window, sfRectangleShape* _player, sfCircleShape* _boule)
@@ -92,7 +90,7 @@ void displayMap(sfRenderWindow* _window, sfRectangleShape* _enemie)
 	{
 		for (int x = 0; x < 5; x++)
 		{
-			sfSprite_setPosition(_enemie, (sfVector2f) { 80 * x + 110, 80 * y + 20 }); 
+			sfSprite_setPosition(_enemie, (sfVector2f) { 110 * x + 40, 80 * y + 20 }); 
 			if (map[y][x] == 1)
 			{
 				sfRectangleShape_setFillColor(_enemie, sfWhite);
