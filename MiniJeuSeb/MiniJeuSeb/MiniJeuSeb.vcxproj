@@ -19,10 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ingame.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="menu.c" />
     <ClCompile Include="tools.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ingame.h" />
+    <ClInclude Include="menu.h" />
     <ClInclude Include="tools.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
