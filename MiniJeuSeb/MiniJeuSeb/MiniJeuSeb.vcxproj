@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ingame.c" />
+    <ClCompile Include="laboulemagique.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="menu.c" />
     <ClCompile Include="music.c" />
@@ -27,6 +28,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ingame.h" />
+    <ClInclude Include="laboulemagique.h" />
     <ClInclude Include="menu.h" />
     <ClInclude Include="music.h" />
     <ClInclude Include="tools.h" />

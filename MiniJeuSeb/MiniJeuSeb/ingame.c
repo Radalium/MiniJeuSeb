@@ -2,6 +2,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#define DEFAULT_POS_X 300.f
+#define DEFAULT_POS_Y 500.f
+
+
 typedef struct Perso Perso;
 struct Perso
 {
@@ -10,10 +14,21 @@ struct Perso
 }; 
 struct Perso joueur = { 200.f,800.f,70.f,20.f };
 float velocity = 0.1f;
+float velocityboulle = 0.1f;
+float angle = 0.f;
+
+sfVector2f possBoule = { 300.f,500.f };
 
 void initGame()
 {
+	boule = sfCircleShape_create();
 	player = sfRectangleShape_create();  
+
+	
+	sfCircleShape_setRadius(boule, 20.f);
+	sfCircleShape_setPosition(boule, possBoule);
+	sfCircleShape_setFillColor(boule, sfWhite);
+	sfRectangleShape_setSize(player, (sfVector2f) { 70.f, 20.f });
 	sfRectangleShape_setPosition(player,joueur.pos);  
 	sfRectangleShape_setFillColor(player, sfWhite); 
 	sfRectangleShape_setSize(player,joueur.taille);  
@@ -35,11 +50,31 @@ void updateGame()
 		joueur.pos.x -= velocity * GetDeltaTime();
 		sfRectangleShape_setPosition(player, joueur.pos);
 	}
+
+	printf("X: %f  Y: %f\n", joueur.pos.x, joueur.pos.y);  
+
+
+	if (sfKeyboard_isKeyPressed(sfKeySpace))
+	{
+		if (possBoule.y > 0.f)
+		{
+			possBoule.y -= velocityboulle * GetDeltaTime();
+		}
+		else if (possBoule.y < 0.f)
+		{
+			possBoule.y -= -velocityboulle * GetDeltaTime();
+		}
+		sfCircleShape_setPosition(boule, possBoule);
+	}
+
+	
+
 }
 
-void displayGame(sfRenderWindow* _window, sfRectangleShape* _player)
+void displayGame(sfRenderWindow* _window, sfRectangleShape* _player, sfCircleShape* _boule)
 {
 	sfRenderWindow_drawRectangleShape(_window, _player, NULL);
+	sfRenderWindow_drawCircleShape(_window, _boule, NULL);
 }
 
 void displayMap(sfRenderWindow* _window, sfRectangleShape* _enemie)
