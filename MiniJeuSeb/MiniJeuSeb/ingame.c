@@ -18,8 +18,9 @@ void initGame()
 	sfRectangleShape_setFillColor(player, sfWhite); 
 	sfRectangleShape_setSize(player,joueur.taille);  
 
+	sfVector2f tailleEnemie = { 85.f,20.f };
     enemie = sfRectangleShape_create(); 
-	sfRectangleShape_setSize(enemie, joueur.taille);
+	sfRectangleShape_setSize(enemie, tailleEnemie);  
 }
 
 void updateGame()
@@ -57,7 +58,7 @@ void displayMap(sfRenderWindow* _window, sfRectangleShape* _enemie)
 	{
 		for (int x = 0; x < 5; x++)
 		{
-			sfSprite_setPosition(_enemie, (sfVector2f) { 80 * x + 110, 80 * y + 20 }); 
+			sfSprite_setPosition(_enemie, (sfVector2f) { 110 * x + 40, 80 * y + 20 }); 
 			if (map[y][x] == 1)
 			{
 				sfRectangleShape_setFillColor(_enemie, sfWhite);
