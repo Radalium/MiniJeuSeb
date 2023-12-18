@@ -43,7 +43,7 @@ int main() {
 		}
 		else if (actualState == INGAME)  {
 			updateGame();
-			displayGame(window, player);
+			displayGame(window, player, boule);
 
 		}
 		else if (actualState == PAUSE) {
