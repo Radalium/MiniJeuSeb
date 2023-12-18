@@ -36,7 +36,7 @@ int main() {
 			{
 				sfRenderWindow_close(window);
 			}
-		}
+		} 
 		sfRenderWindow_clear(window, sfBlack);
 		
 		if (actualState == MAINMENU) {
