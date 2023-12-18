@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include "tools.h"
 #include "SFML/Graphics.h"
+#include "menu.h"
+#include "tools.h"
+
 
 typedef enum states {
 
@@ -20,6 +23,9 @@ int main() {
 	window = sfRenderWindow_create(mode, "Window", sfDefaultStyle, NULL);
 
 	sfEvent event;
+	initMenu();
+
+
 
 	//boucle de jeu
 	while (sfRenderWindow_isOpen(window))
@@ -38,7 +44,8 @@ int main() {
 		}
 		
 		if (actualState == MAINMENU) {
-
+			updateMenu();
+			displayMenu(window);
 		}
 		else if (actualState == INGAME) {
 
