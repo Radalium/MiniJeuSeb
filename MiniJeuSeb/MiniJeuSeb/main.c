@@ -14,7 +14,7 @@ int main() {
 
 	sfVideoMode mode = { 600, 900, 32 };
 	sfRenderWindow* window;
-	window = sfRenderWindow_create(mode, "Window", sfDefaultStyle, NULL);
+	window = sfRenderWindow_create(mode, "Foxo Invader - Made By Radalium & Renard100suel", sfDefaultStyle, NULL);
 
 	sfEvent event;
 	initMenu();
