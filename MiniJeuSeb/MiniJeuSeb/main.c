@@ -26,6 +26,7 @@ int main() {
 				sfRenderWindow_close(window);
 			}
 		}
+		// update 
 
 		sfRenderWindow_clear(window, sfBlack);
 		sfRenderWindow_display(window);
