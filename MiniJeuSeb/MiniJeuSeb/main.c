@@ -3,12 +3,8 @@
 #include "tools.h"
 #include "SFML/Graphics.h"
 #include "menu.h"
+#include "ingame.h"
 #include "tools.h"
-
-
-
-
- 
 
 int main() {
 
@@ -18,25 +14,27 @@ int main() {
 
 	sfEvent event;
 	initMenu();
-	actualState = MAINMENU;
+	initTools();
+	initGame();
 
-
+	actualState = INGAME;
 
 	//boucle de jeu
 	while (sfRenderWindow_isOpen(window))
 	{
 		//timer
-		/*restartClock();*/
-
-
-		//update
+		restartClock();
+		
 		while (sfRenderWindow_pollEvent(window, &event))
 		{
 			if (event.type == sfEvtClosed)
 			{
 				sfRenderWindow_close(window);
 			}
+
+		//update
 		} 
+
 		sfRenderWindow_clear(window, sfBlack);
 		
 		if (actualState == MAINMENU) {
@@ -44,6 +42,8 @@ int main() {
 			displayMenu(window);
 		}
 		else if (actualState == INGAME)  {
+			updateGame();
+			displayGame(window, player);
 
 		}
 		else if (actualState == PAUSE) {
@@ -53,11 +53,6 @@ int main() {
 
 		}
 
-		
-
-
-
-	
 		sfRenderWindow_display(window);
 	}
 }
