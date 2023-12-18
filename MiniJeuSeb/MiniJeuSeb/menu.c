@@ -3,7 +3,7 @@
 
 void initMenu()
 {
-
+	sfVector2f scale = { 0.3f, 0.3f };
 	text = sfText_create();
 	sfFont* font = sfFont_createFromFile("../assets/text/cakeroll.ttf");
 	sfText_setString(text, "Click To Start");
@@ -14,11 +14,12 @@ void initMenu()
 
 	logo = sfSprite_create();
 
-	sfTexture* texture = sfTexture_createFromFile("../assets/texture/fox.jpg", NULL);
+	sfTexture* texture = sfTexture_createFromFile("../assets/texture/foxai.png", NULL);
+	sfSprite_setScale(logo, scale);
 
 	sfSprite_setTexture(logo, texture, sfTrue);
 
-	sfSprite_setPosition(logo, (sfVector2f) { 100, 100 });
+	sfSprite_setPosition(logo, (sfVector2f) { 135, 100 });
 
 }
 
