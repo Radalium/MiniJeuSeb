@@ -93,7 +93,7 @@ void updateGame()
 	{
 		circleVel.x = -circleVel.x;
 	}
-	else if (sfCircleShape_getPosition(boule).x <= 0.f)
+	else if (sfCircleShape_getPosition(boule).x <= 0.f + sfCircleShape_getRadius(boule) + 5.f)
 	{
 		circleVel.x = -circleVel.x;
 	}
@@ -102,7 +102,7 @@ void updateGame()
 	{
 		circleVel.y = -circleVel.y * GetDeltaTime();
 	}*/
-	else if (sfCircleShape_getPosition(boule).y <= 0.f + sfCircleShape_getRadius(boule))
+	else if (sfCircleShape_getPosition(boule).y <= 0.f + sfCircleShape_getRadius(boule) +2.f)
 	{
 		circleVel.y = -circleVel.y;
 	}
