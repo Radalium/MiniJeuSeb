@@ -100,9 +100,7 @@ void displayMap(sfRenderWindow* _window, sfRectangleShape* _enemie, sfCircleShap
 	  		if (map[y][x] != 0 && sfFloatRect_intersects(&bouleBox, &enemierect, NULL)) 
 	  		{
 				circleVel.y = -circleVel.y;
-				_score1 += 1; 
-				printf("Score: %d\n", _score1); 
-				
+				_score1 += 1;                      
 	  			map[y][x] = 0;
 	  		}
 	  		
@@ -128,5 +126,6 @@ void displayMap(sfRenderWindow* _window, sfRectangleShape* _enemie, sfCircleShap
 	  		}
 	  	}
 	  }
+	  
 }
 

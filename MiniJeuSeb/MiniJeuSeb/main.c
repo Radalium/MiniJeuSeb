@@ -20,20 +20,19 @@ int main() {
 	sfShader* shader = NULL;
 	sfRenderStates renderState;
 
-	sfText* score;
-	score = sfText_create();
+	sfText* scoreText;
+	scoreText = sfText_create();
 	sfFont* font;
 	font = sfFont_createFromFile("../assets/text/cakeroll.ttf");
-	sfText_setFont(score, font);
-	sfText_setPosition(score, (sfVector2f) { 100.f, 500.f });
-	sfText_setColor(score, sfWhite);
-	sfText_setCharacterSize(score, 24);  
+	sfText_setFont(scoreText, font);
+	sfText_setPosition(scoreText, (sfVector2f) { 100.f, 500.f });
+	sfText_setColor(scoreText, sfWhite);
+	sfText_setCharacterSize(scoreText, 24);
 
-	int score1 = 0;
+	int score;
+	score = 0;
 	char scoreStr[20];
-
 	
-
 	if (!sfShader_isAvailable())
 	{
 		printf("Shader impossible...\n");
@@ -72,15 +71,14 @@ int main() {
 			break;
 
 		case INGAME:
- 
+			
 			updateGame(); 
 			displayGame(window, player, boule); 
-			score1++;
-			displayMap(window, enemie, boule,score1);  
-
-			sprintf(scoreStr, "Score: %d", score1); 
-			sfText_setString(score, scoreStr);
-			sfRenderWindow_drawText(window, score, NULL); 
+			displayMap(window, enemie, boule,score);  
+			printf("%d\n", score);
+			sprintf(scoreStr, "Score: %d", score); 
+			sfText_setString(scoreText, scoreStr);
+			sfRenderWindow_drawText(window, scoreText, NULL); 
 			break;
 
 		case PAUSE:
