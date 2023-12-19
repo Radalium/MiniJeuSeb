@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include "tools.h"
 #include <math.h>
+#include "music.h"
 
 #define DEFAULT_POS_X 300.f
 #define DEFAULT_POS_Y 500.f
@@ -70,8 +71,18 @@ void initGame()
 	sfText_setCharacterSize(niveauText, 80); 
 }
 
+
+
+sfBool isPlaying = sfFalse;
+
 void updateGame()
 {
+	if (isPlaying == sfFalse)
+	{
+		sfMusic_play(musiquejeu);
+		isPlaying = sfTrue;
+	}
+
 	futurepos.x = possBoule.x + circleVel.x * GetDeltaTime() * 800.f;
 	futurepos.y = possBoule.y + circleVel.y * GetDeltaTime() * 800.f;
 
@@ -197,6 +208,7 @@ void displayMap(sfRenderWindow* _window, sfRectangleShape* _enemie, sfCircleShap
 
 				if (map[y][x] != 0 && sfFloatRect_intersects(&bouleBox, &enemierect, NULL))
 				{
+					sfSound_play(bounce);
 					circleVel.y = -circleVel.y;
 					score++;
 					map[y][x] = 0;
