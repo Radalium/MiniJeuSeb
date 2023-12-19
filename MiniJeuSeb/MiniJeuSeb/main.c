@@ -17,6 +17,8 @@ int main() {
 	initTools();
 	initGame();
 
+	int a = 0;
+
 	actualState = MAINMENU;
 
 	//boucle de jeu
@@ -36,24 +38,34 @@ int main() {
 		} 
 
 		sfRenderWindow_clear(window, sfBlack);
+
 		
-		if (actualState == MAINMENU) {
+		switch (actualState)
+		{
+		case MAINMENU:
+			
 			updateMenu();
 			displayMenu(window);
-		}
-		else if (actualState == INGAME)  {
-			updateGame();
+
+			break;
+
+		case INGAME:
+ 
+			updateGame(); 
+			displayGame(window, player, boule); 
 			displayMap(window, enemie, boule); 
-			displayGame(window, player, boule);
 
+			break;
+
+		case PAUSE:
+
+			break;
+
+
+		default:
+			break;
 		}
-		else if (actualState == PAUSE) {
 
-		}
-		else if (actualState == QUIT) {
-
-		}
-
-		sfRenderWindow_display(window);
+		sfRenderWindow_display(window); 
 	}
 }
