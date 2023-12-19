@@ -21,7 +21,6 @@ void initMusique()
 
 	sfSound_setVolume(bounce, 50);
 	sfSound_setVolume(bounce2, 50);
-
 }
 
 void updateMusique()

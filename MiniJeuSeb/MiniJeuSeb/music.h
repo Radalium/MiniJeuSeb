@@ -3,11 +3,8 @@
 #include "SFML/Graphics.h"
 
 void initMusique();
-
 void updateMusique();
-
 void displayMusique(sfRenderWindow* _window);
-
 
 sfMusic* musiquemenu;
 sfMusic* musiquejeu;
