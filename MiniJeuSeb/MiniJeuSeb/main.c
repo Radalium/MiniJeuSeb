@@ -19,6 +19,21 @@ int main() {
 
 	sfShader* shader = NULL;
 	sfRenderStates renderState;
+
+	sfText* score;
+	score = sfText_create();
+	sfFont* font;
+	font = sfFont_createFromFile("../assets/text/cakeroll.ttf");
+	sfText_setFont(score, font);
+	sfText_setPosition(score, (sfVector2f) { 100.f, 500.f });
+	sfText_setColor(score, sfWhite);
+	sfText_setCharacterSize(score, 24);  
+
+	int score1 = 0;
+	char scoreStr[20];
+
+	
+
 	if (!sfShader_isAvailable())
 	{
 		printf("Shader impossible...\n");
@@ -41,12 +56,10 @@ int main() {
 	{
 		//timer
 		restartClock();
-		
 		while (sfRenderWindow_pollEvent(window, &event))
 		{
 			if (event.type == sfEvtClosed){sfRenderWindow_close(window);}
 		
-			//update
 		} 
 		sfRenderWindow_clear(window, sfBlack);
 
@@ -61,8 +74,13 @@ int main() {
 		case INGAME:
  
 			updateGame(); 
-			displayGame(window, player, boule, &renderState); 
-			displayMap(window, enemie, boule); 
+			displayGame(window, player, boule); 
+			score1++;
+			displayMap(window, enemie, boule,score1);  
+
+			sprintf(scoreStr, "Score: %d", score1); 
+			sfText_setString(score, scoreStr);
+			sfRenderWindow_drawText(window, score, NULL); 
 			break;
 
 		case PAUSE:
@@ -70,9 +88,7 @@ int main() {
 		}
 		sfVector2f vec = { 10.f, 10.f };
 		
-		sfShader_setTextureUniform(shader, "blur_radius", texture);
-		sfShader_setTextureUniform(shader, "texture", texture);
-		sfRenderWindow_drawRectangleShape(window, player, &renderState);
+		
 		sfRenderWindow_display(window); 
 	}
 }

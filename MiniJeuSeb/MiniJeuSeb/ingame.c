@@ -4,6 +4,8 @@
 #define DEFAULT_POS_X 300.f
 #define DEFAULT_POS_Y 500.f
 
+ 
+
 typedef struct Perso Perso;
 struct Perso
 {
@@ -20,8 +22,7 @@ sfVector2f circleVel = { 0.1f, 0.1f };
 void initGame()
 {
 	boule = sfCircleShape_create();
-	player = sfRectangleShape_create();  
-	texture = sfTexture_create(70.f, 20.f);
+	player = sfRectangleShape_create();
 
 	sfCircleShape_setRadius(boule, 20.f);
 	sfCircleShape_setPosition(boule, possBoule);
@@ -31,7 +32,6 @@ void initGame()
 	sfRectangleShape_setPosition(player,joueur.pos);  
 	sfRectangleShape_setFillColor(player, sfWhite); 
 	sfRectangleShape_setSize(player,joueur.taille);
-	sfRectangleShape_setTexture(player, texture, NULL);
 
 	sfVector2f tailleEnemie = { 85.f,20.f };
     enemie = sfRectangleShape_create(); 
@@ -66,7 +66,7 @@ void updateGame()
 	sfCircleShape_setPosition(boule, possBoule); 
 }
 
-void displayGame(sfRenderWindow* _window, sfRectangleShape* _player, sfCircleShape* _boule, sfRenderStates* _renderState)
+void displayGame(sfRenderWindow* _window, sfRectangleShape* _player, sfCircleShape* _boule)
 {
 	sfRenderWindow_drawRectangleShape(_window, _player, NULL);
 	sfRenderWindow_drawCircleShape(_window, _boule, NULL); 
@@ -82,7 +82,8 @@ char map[7][5] = {
 		{0,0,0,0,0}
 	};
 
-void displayMap(sfRenderWindow* _window, sfRectangleShape* _enemie, sfCircleShape* _boule)
+
+void displayMap(sfRenderWindow* _window, sfRectangleShape* _enemie, sfCircleShape* _boule, int* _score1)
 {
 	char* pointeur = map;
 	sfFloatRect enemierect; 
@@ -99,6 +100,9 @@ void displayMap(sfRenderWindow* _window, sfRectangleShape* _enemie, sfCircleShap
 	  		if (map[y][x] != 0 && sfFloatRect_intersects(&bouleBox, &enemierect, NULL)) 
 	  		{
 				circleVel.y = -circleVel.y;
+				_score1 += 1; 
+				printf("Score: %d\n", _score1); 
+				
 	  			map[y][x] = 0;
 	  		}
 	  		
