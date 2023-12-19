@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include "tools.h"
 #include <math.h>
+#include "music.h"
 
 #define DEFAULT_POS_X 300.f
 #define DEFAULT_POS_Y 500.f
@@ -83,12 +84,19 @@ void initGame()
 	sfText_setCharacterSize(niveauText, 80); 
 }
 
+sfBool isPlaying = sfFalse;
+
 void updateGame()
 {
 	deplace.futurepos.x = deplace.possBoule.x + deplace.circleVel.x * GetDeltaTime() * 800.f;
 	deplace.futurepos.y = deplace.possBoule.y + deplace.circleVel.y * GetDeltaTime() * 800.f;
 	deplace.timer += GetDeltaTime();
 
+	if (isPlaying == sfFalse)
+	{
+		sfMusic_play(musiquejeu);
+		isPlaying = sfTrue;
+	}
 	sfShader_setFloatUniform(shader, "iTime", deplace.timer);
 	sfShader_setVec2Uniform(shader, "iResolution", vector2f(600.f, 900.f));
 
@@ -190,6 +198,7 @@ void displayMap(sfRenderWindow* _window, sfRectangleShape* _enemie, sfCircleShap
 				{
 					deplace.circleVel.y = -deplace.circleVel.y;
 					stats.score++;
+					sfSound_play(bounce);
 					map[y][x] = 0;
 				}
 

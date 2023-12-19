@@ -13,9 +13,9 @@ int main()
 	sfVideoMode mode = { 600, 900, 32 };
 	sfRenderWindow* window;
 	window = sfRenderWindow_create(mode, "Foxo Invader - Made By Radalium & Renard100suel", sfDefaultStyle, NULL);
-
-	initMenu();
+	
 	initMusique();
+	initMenu();
 	initTools();
 	initGame();
 	
@@ -60,7 +60,7 @@ int main()
 			break;
         
 		case INGAME:
-			
+			sfMusic_stop(musiquemenu);
 			updateGame(); 
 			displayGame(window, player, boule); 
 			displayMap(window, enemie, boule);  
