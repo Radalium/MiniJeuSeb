@@ -14,27 +14,28 @@ struct Perso
 }; 
 struct Perso joueur = { 200.f,800.f,70.f,20.f };
 float velocity = 0.1f;
-float velocityboulle = 0.1f;
 float angle = 0.f;
 
 sfVector2f possBoule = { 300.f,500.f };
+sfVector2f circleVel = { 0.1f, 0.1f };
 
 void initGame()
 {
 	boule = sfCircleShape_create();
 	player = sfRectangleShape_create();  
 
-	
 	sfCircleShape_setRadius(boule, 20.f);
 	sfCircleShape_setPosition(boule, possBoule);
 	sfCircleShape_setFillColor(boule, sfWhite);
+
 	sfRectangleShape_setSize(player, (sfVector2f) { 70.f, 20.f });
 	sfRectangleShape_setPosition(player,joueur.pos);  
 	sfRectangleShape_setFillColor(player, sfWhite); 
 	sfRectangleShape_setSize(player,joueur.taille);  
 
+	sfVector2f tailleEnemie = { 85.f,20.f };
     enemie = sfRectangleShape_create(); 
-	sfRectangleShape_setSize(enemie, joueur.taille);
+	sfRectangleShape_setSize(enemie, tailleEnemie);  
 }
 
 void updateGame()
@@ -50,22 +51,32 @@ void updateGame()
 		sfRectangleShape_setPosition(player, joueur.pos);
 	}
 
-	printf("X: %f  Y: %f\n", joueur.pos.x, joueur.pos.y);  
-
-
-
-		if (possBoule.y > 0.f)
-		{
-			possBoule.y -= velocityboulle * GetDeltaTime();
-		}
-		else if (possBoule.y < 900.f)
-		{
-			possBoule.y += velocityboulle * GetDeltaTime();
-		}
-		sfCircleShape_setPosition(boule, possBoule);
+	if (sfCircleShape_getPosition(boule).x >= 600 - 2 * sfCircleShape_getRadius(boule))
+	{
+		circleVel.x = -circleVel.x * GetDeltaTime();
+	}
+	else if (sfCircleShape_getPosition(boule).x <= 0.f)
+	{
+		circleVel.x = -circleVel.x * GetDeltaTime();
+	}
 	
+	else if (sfCircleShape_getPosition(boule).y >= 900 - 2 * sfCircleShape_getRadius(boule))
+	{
+		circleVel.y = -circleVel.y * GetDeltaTime();
+	}
+	else if (sfCircleShape_getPosition(boule).y <= 0.f)
+	{
+		circleVel.y = -circleVel.y * GetDeltaTime();
+	}
 
-	
+	sfFloatRect bouleBox = sfCircleShape_getGlobalBounds(boule);
+	sfFloatRect playerBox = sfRectangleShape_getGlobalBounds(player);
+
+
+	if (sfFloatRect_intersects(&bouleBox, &playerBox, NULL))
+	{
+		circleVel.y = -circleVel.y;
+	}
 
 }
 
@@ -75,7 +86,7 @@ void displayGame(sfRenderWindow* _window, sfRectangleShape* _player, sfCircleSha
 	sfRenderWindow_drawCircleShape(_window, _boule, NULL);
 }
 
-void displayMap(sfRenderWindow* _window, sfRectangleShape* _enemie)
+void displayMap(sfRenderWindow* _window, sfRectangleShape* _enemie, sfCircleShape* _boule)
 {
 	char map[7][5] = {
 		{1,1,1,1,1},
@@ -87,11 +98,27 @@ void displayMap(sfRenderWindow* _window, sfRectangleShape* _enemie)
 		{0,0,0,0,0}
 	};
 
+	sfFloatRect enemierect; 
+
 	for (int y = 0; y < 7; y++)
 	{
 		for (int x = 0; x < 5; x++)
 		{
-			sfSprite_setPosition(_enemie, (sfVector2f) { 80 * x + 110, 80 * y + 20 }); 
+			sfSprite_setPosition(_enemie, (sfVector2f) { 110 * x + 40, 80 * y + 20 }); 
+			
+			sfFloatRect bouleBox = sfCircleShape_getGlobalBounds(_boule);
+			enemierect = sfRectangleShape_getGlobalBounds(_enemie);
+
+			if (map[y][x] != 0 && sfFloatRect_intersects(&bouleBox, &enemierect, NULL))
+			{
+				int num = 1;
+				circleVel.y = -circleVel.y;
+				printf("Collision %d \n", num++);
+
+				// "Supprimer" le rectangle touché en le marquant comme vide (0)
+				map[y][x] = 0;
+			}
+			
 			if (map[y][x] == 1)
 			{
 				sfRectangleShape_setFillColor(_enemie, sfWhite);
@@ -112,6 +139,16 @@ void displayMap(sfRenderWindow* _window, sfRectangleShape* _enemie)
 				sfRectangleShape_setFillColor(_enemie, sfYellow);
 				sfRenderWindow_drawRectangleShape(_window, _enemie, NULL);
 			}
+
+		
+
 		}
 	}
+
+	possBoule.x += circleVel.x;
+	possBoule.y += circleVel.y;
+
+	sfCircleShape_setPosition(boule, possBoule);
+
 }
+

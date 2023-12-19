@@ -13,24 +13,15 @@ void initMenu()
 	sfText_setColor(text, sfWhite);
 
 	logo = sfSprite_create();
-
 	sfTexture* texture = sfTexture_createFromFile("../assets/texture/foxai.png", NULL);
 	sfSprite_setScale(logo, scale);
-
 	sfSprite_setTexture(logo, texture, sfTrue);
-
 	sfSprite_setPosition(logo, (sfVector2f) { 135, 100 });
-
 }
-
-
 
 void updateMenu()
 {
-	if (sfMouse_isButtonPressed(sfMouseLeft))
-	{
-		actualState = INGAME;
-	}
+	if (sfMouse_isButtonPressed(sfMouseLeft)) actualState = INGAME;
 }
 
 void displayMenu(sfRenderWindow* _window)

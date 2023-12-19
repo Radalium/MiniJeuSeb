@@ -7,6 +7,13 @@ sfCircleShape* boule;
 
 sfRectangleShape* enemie;
 
+sfFloatRect bouleBox;
+
+sfFloatRect playerBox;
+
+sfFloatRect enemierect;
+
+
 void initGame();
 
 void updateGame(); 
@@ -14,5 +21,6 @@ void updateGame();
 
 void displayGame(sfRenderWindow* _window, sfRectangleShape* _player, sfCircleShape* _boule);
 
-void displayMap(sfRenderWindow* _window, sfRectangleShape* _enemie);
+void displayMap(sfRenderWindow* _window, sfRectangleShape* _enemie, sfCircleShape* _boule); 
+
 
