@@ -140,6 +140,7 @@ void displayGame(sfRenderWindow* _window, sfRectangleShape* _player, sfCircleSha
 	sfRenderWindow_drawRectangleShape(_window, _player, NULL);
 	sfRenderWindow_drawCircleShape(_window, _boule, NULL);
 	sfRenderWindow_drawRectangleShape(_window, lalignemagique, NULL);
+}
 
 
 char map[7][5] = {
@@ -175,9 +176,9 @@ void displayMap(sfRenderWindow* _window, sfRectangleShape* _enemie, sfCircleShap
 	  		}
 	  		
 	  		if (map[y][x] == 1)
-	  		{
-	  			sfRectangleShape_setFillColor(_enemie, sfWhite);
-	  	        sfRenderWindow_drawRectangleShape(_window, _enemie, NULL);
+	  		{ 
+	  			sfRectangleShape_setFillColor(_enemie, sfWhite);  
+	  	        sfRenderWindow_drawRectangleShape(_window, _enemie, NULL); 
 	  		}
 	  		else if (map[y][x] == 2) 
 	  		{
