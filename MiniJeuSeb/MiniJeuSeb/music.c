@@ -8,7 +8,7 @@ void initMusique()
 	bounce = sfSound_create();
 	bounce2 = sfSound_create();
 
-	sfSoundBuffer* bounceBuf = sfSoundBuffer_createFromFile("..//assets/sounds/bounce.wav");
+	sfSoundBuffer* bounceBuf = sfSoundBuffer_createFromFile("..//assets/sounds/bounce.ogg");
 	sfSoundBuffer* bounceBuf2 = sfSoundBuffer_createFromFile("..//assets/sounds/bounce2.wav");
 	sfSound_setBuffer(bounce, bounceBuf);
 	sfSound_setBuffer(bounce2, bounceBuf2);
@@ -16,7 +16,7 @@ void initMusique()
 	sfMusic_setLoop(musiquejeu, sfTrue);
 	sfMusic_setLoop(musiquemenu, sfTrue);
 
-	sfMusic_setVolume(musiquejeu, 50);
+	sfMusic_setVolume(musiquejeu, 20);
 	sfMusic_setVolume(musiquemenu, 50);
 
 	sfSound_setVolume(bounce, 50);

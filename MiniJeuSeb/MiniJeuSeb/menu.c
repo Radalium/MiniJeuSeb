@@ -20,6 +20,7 @@ void initMenu()
 	sfSprite_setScale(logo, scale);
 	sfSprite_setTexture(logo, texture, sfTrue);
 	sfSprite_setPosition(logo, (sfVector2f) { 135, 100 });
+	sfMusic_play(musiquemenu);
 }
 
 void updateMenu()
