@@ -9,6 +9,8 @@ sfRectangleShape* enemie;
 
 sfRectangleShape* lalignemagique;
 
+sfCircleShape* ghostmaboule;
+
 sfFloatRect bouleBox;
 
 sfFloatRect playerBox;
