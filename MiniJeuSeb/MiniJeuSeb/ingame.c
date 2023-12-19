@@ -1,7 +1,6 @@
 #include "ingame.h"
 #include <stdlib.h>
 #include <stdio.h>
-
 #define DEFAULT_POS_X 300.f
 #define DEFAULT_POS_Y 500.f
 
@@ -22,6 +21,7 @@ void initGame()
 {
 	boule = sfCircleShape_create();
 	player = sfRectangleShape_create();  
+	texture = sfTexture_create(70.f, 20.f);
 
 	sfCircleShape_setRadius(boule, 20.f);
 	sfCircleShape_setPosition(boule, possBoule);
@@ -30,7 +30,8 @@ void initGame()
 	sfRectangleShape_setSize(player, (sfVector2f) { 70.f, 20.f });
 	sfRectangleShape_setPosition(player,joueur.pos);  
 	sfRectangleShape_setFillColor(player, sfWhite); 
-	sfRectangleShape_setSize(player,joueur.taille);  
+	sfRectangleShape_setSize(player,joueur.taille);
+	sfRectangleShape_setTexture(player, texture, NULL);
 
 	sfVector2f tailleEnemie = { 85.f,20.f };
     enemie = sfRectangleShape_create(); 
@@ -50,45 +51,26 @@ void updateGame()
 		sfRectangleShape_setPosition(player, joueur.pos);
 	}
 
-
-	if (sfCircleShape_getPosition(boule).x >= 600 - 2 * sfCircleShape_getRadius(boule))
-	{
-		circleVel.x = -circleVel.x * GetDeltaTime();
-	}
-	else if (sfCircleShape_getPosition(boule).x <= 0.f)
-	{
-		circleVel.x = -circleVel.x * GetDeltaTime();
-	}
+	if (sfCircleShape_getPosition(boule).x >= 600 - 2 * sfCircleShape_getRadius(boule))circleVel.x = -circleVel.x * GetDeltaTime();
+	else if (sfCircleShape_getPosition(boule).x <= 0.f)circleVel.x = -circleVel.x * GetDeltaTime();
+	else if (sfCircleShape_getPosition(boule).y >= 900 - 2 * sfCircleShape_getRadius(boule))circleVel.y = -circleVel.y * GetDeltaTime();
+	else if (sfCircleShape_getPosition(boule).y <= 0.f)circleVel.y = -circleVel.y * GetDeltaTime();
 	
-	else if (sfCircleShape_getPosition(boule).y >= 900 - 2 * sfCircleShape_getRadius(boule))
-	{
-		circleVel.y = -circleVel.y * GetDeltaTime();
-	}
-	else if (sfCircleShape_getPosition(boule).y <= 0.f)
-	{
-		circleVel.y = -circleVel.y * GetDeltaTime();
-	}
-
 	sfFloatRect bouleBox = sfCircleShape_getGlobalBounds(boule);
 	sfFloatRect playerBox = sfRectangleShape_getGlobalBounds(player);
 	sfFloatRect enemieBox = sfRectangleShape_getGlobalBounds(enemie);
 
-	if (sfFloatRect_intersects(&bouleBox, &playerBox, NULL))
-	{
-		circleVel.y = -circleVel.y;
-	}
-
+	if (sfFloatRect_intersects(&bouleBox, &playerBox, NULL)){circleVel.y = -circleVel.y;}
 	possBoule.x += circleVel.x; 
 	possBoule.y += circleVel.y; 
-
 	sfCircleShape_setPosition(boule, possBoule); 
 }
 
-void displayGame(sfRenderWindow* _window, sfRectangleShape* _player, sfCircleShape* _boule)
+void displayGame(sfRenderWindow* _window, sfRectangleShape* _player, sfCircleShape* _boule, sfRenderStates* _renderState)
 {
 	sfRenderWindow_drawRectangleShape(_window, _player, NULL);
-	sfRenderWindow_drawCircleShape(_window, _boule, NULL);
-}
+	sfRenderWindow_drawCircleShape(_window, _boule, NULL); 
+} 
 
 char map[7][5] = {
 		{1,1,1,1,1},
@@ -102,12 +84,9 @@ char map[7][5] = {
 
 void displayMap(sfRenderWindow* _window, sfRectangleShape* _enemie, sfCircleShape* _boule)
 {
-	
-
 	char* pointeur = map;
-
 	sfFloatRect enemierect; 
-	
+
 	  for (int y = 0; y < 7; y++)
 	  {
 	  	for (int x = 0; x < 5; x++)
@@ -144,7 +123,6 @@ void displayMap(sfRenderWindow* _window, sfRectangleShape* _enemie, sfCircleShap
 	  			sfRenderWindow_drawRectangleShape(_window, _enemie, NULL);
 	  		}
 	  	}
-		
-	 }
+	  }
 }
 

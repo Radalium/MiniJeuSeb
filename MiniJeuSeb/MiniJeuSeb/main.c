@@ -17,9 +17,24 @@ int main() {
 	initTools();
 	initGame();
 
-	int a = 0;
-
-	actualState = MAINMENU;
+	sfShader* shader = NULL;
+	sfRenderStates renderState;
+	if (!sfShader_isAvailable())
+	{
+		printf("Shader impossible...\n");
+		return EXIT_FAILURE;
+	}
+	else
+	{
+		shader = sfShader_createFromFile(/*"hello vert"*/NULL, NULL, "shader.frag");
+		if (shader == NULL) 
+			return EXIT_FAILURE;
+		renderState.shader = shader;
+		renderState.blendMode = sfBlendAlpha;
+		renderState.transform = sfTransform_Identity;
+		renderState.texture = NULL;
+	}
+    actualState = MAINMENU;
 
 	//boucle de jeu
 	while (sfRenderWindow_isOpen(window))
@@ -29,43 +44,35 @@ int main() {
 		
 		while (sfRenderWindow_pollEvent(window, &event))
 		{
-			if (event.type == sfEvtClosed)
-			{
-				sfRenderWindow_close(window);
-			}
-
-		//update
+			if (event.type == sfEvtClosed){sfRenderWindow_close(window);}
+		
+			//update
 		} 
-
 		sfRenderWindow_clear(window, sfBlack);
 
-		
 		switch (actualState)
 		{
 		case MAINMENU:
 			
 			updateMenu();
 			displayMenu(window);
-
 			break;
 
 		case INGAME:
  
 			updateGame(); 
-			displayGame(window, player, boule); 
+			displayGame(window, player, boule, &renderState); 
 			displayMap(window, enemie, boule); 
-
 			break;
 
 		case PAUSE:
-
-			break;
-
-
-		default:
 			break;
 		}
-
+		sfVector2f vec = { 10.f, 10.f };
+		
+		sfShader_setTextureUniform(shader, "blur_radius", texture);
+		sfShader_setTextureUniform(shader, "texture", texture);
+		sfRenderWindow_drawRectangleShape(window, player, &renderState);
 		sfRenderWindow_display(window); 
 	}
 }
