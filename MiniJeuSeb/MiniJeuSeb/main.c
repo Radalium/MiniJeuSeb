@@ -7,36 +7,22 @@
 #include "tools.h"
 #include "music.h"
 
-int main() {
-
+int main() 
+{
+    sfEvent event;
 	sfVideoMode mode = { 600, 900, 32 };
 	sfRenderWindow* window;
 	window = sfRenderWindow_create(mode, "Foxo Invader - Made By Radalium & Renard100suel", sfDefaultStyle, NULL);
 
-	sfEvent event;
 	initMenu();
 	initMusique();
 	initTools();
 	initGame();
-	float tiemrmusique = 0.f;
 	
-
-	sfShader* shader = NULL;
-	sfRenderStates renderState;
-
-	sfText* scoreText;
-	scoreText = sfText_create();
-	sfFont* font;
-	font = sfFont_createFromFile("../assets/text/cakeroll.ttf");
-	sfText_setFont(scoreText, font);
-	sfText_setPosition(scoreText, (sfVector2f) { 100.f, 500.f });
-	sfText_setColor(scoreText, sfWhite);
-	sfText_setCharacterSize(scoreText, 24);
-
-	int score;
-	score = 0;
-	char scoreStr[20];
+	float timermusique = 0.f;
 	
+	sfShader* shader = NULL; 
+	sfRenderStates renderState; 
 	if (!sfShader_isAvailable())
 	{
 		printf("Shader impossible...\n");
@@ -62,7 +48,6 @@ int main() {
 		while (sfRenderWindow_pollEvent(window, &event))
 		{
 			if (event.type == sfEvtClosed){sfRenderWindow_close(window);}
-		
 		} 
 		sfRenderWindow_clear(window, sfBlack);
 
@@ -78,19 +63,12 @@ int main() {
 			
 			updateGame(); 
 			displayGame(window, player, boule); 
-			displayMap(window, enemie, boule,score);  
-			printf("%d\n", score);
-			sprintf(scoreStr, "Score: %d", score); 
-			sfText_setString(scoreText, scoreStr);
-			sfRenderWindow_drawText(window, scoreText, NULL); 
+			displayMap(window, enemie, boule);  
 			break;
 
 		case PAUSE:
 			break;
 		}
-		sfVector2f vec = { 10.f, 10.f };
-		
-		
 		sfRenderWindow_display(window); 
 	}
 }
