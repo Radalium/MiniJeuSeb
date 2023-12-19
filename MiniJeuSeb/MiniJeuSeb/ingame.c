@@ -21,6 +21,7 @@ float angle = 0.f;
 
 sfVector2f possBoule = { 300.f,500.f };
 sfVector2f circleVel = { 0.0f, 1.f };
+sfVector2f futurepos = { 0.f,0.f };
 
 
 float timer = 0.f;
@@ -65,6 +66,9 @@ void initGame()
 
 void updateGame()
 {
+	futurepos.x = possBoule.x + circleVel.x * GetDeltaTime() * 800.f;
+	futurepos.y = possBoule.y + circleVel.y * GetDeltaTime() * 800.f;
+
 	timer += GetDeltaTime();
 
 	sfShader_setFloatUniform(shader, "iTime", timer);
@@ -89,11 +93,11 @@ void updateGame()
 	}
 
 
-	if (sfCircleShape_getPosition(boule).x >= 600 - sfCircleShape_getRadius(boule))
+	if (futurepos.x >= 600 - sfCircleShape_getRadius(boule))
 	{
 		circleVel.x = -circleVel.x;
 	}
-	else if (sfCircleShape_getPosition(boule).x <= 0.f + sfCircleShape_getRadius(boule) + 5.f)
+	else if (futurepos.x <= 0.f + sfCircleShape_getRadius(boule) + 5.f)
 	{
 		circleVel.x = -circleVel.x;
 	}
@@ -102,7 +106,7 @@ void updateGame()
 	{
 		circleVel.y = -circleVel.y * GetDeltaTime();
 	}*/
-	else if (sfCircleShape_getPosition(boule).y <= 0.f + sfCircleShape_getRadius(boule) +2.f)
+	else if (futurepos.y < 0.f + sfCircleShape_getRadius(boule))
 	{
 		circleVel.y = -circleVel.y;
 	}
