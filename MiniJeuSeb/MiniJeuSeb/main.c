@@ -21,45 +21,76 @@ int main() {
 	float tiemrmusique = 0.f;
 	
 
-	actualState = MAINMENU;
+	sfShader* shader = NULL;
+	sfRenderStates renderState;
+
+	sfText* scoreText;
+	scoreText = sfText_create();
+	sfFont* font;
+	font = sfFont_createFromFile("../assets/text/cakeroll.ttf");
+	sfText_setFont(scoreText, font);
+	sfText_setPosition(scoreText, (sfVector2f) { 100.f, 500.f });
+	sfText_setColor(scoreText, sfWhite);
+	sfText_setCharacterSize(scoreText, 24);
+
+	int score;
+	score = 0;
+	char scoreStr[20];
+	
+	if (!sfShader_isAvailable())
+	{
+		printf("Shader impossible...\n");
+		return EXIT_FAILURE;
+	}
+	else
+	{
+		shader = sfShader_createFromFile(/*"hello vert"*/NULL, NULL, "shader.frag");
+		if (shader == NULL) 
+			return EXIT_FAILURE;
+		renderState.shader = shader;
+		renderState.blendMode = sfBlendAlpha;
+		renderState.transform = sfTransform_Identity;
+		renderState.texture = NULL;
+	}
+    actualState = MAINMENU;
 
 	//boucle de jeu
 	while (sfRenderWindow_isOpen(window))
 	{
 		//timer
 		restartClock();
-		
 		while (sfRenderWindow_pollEvent(window, &event))
 		{
-			if (event.type == sfEvtClosed)
-			{
-				sfRenderWindow_close(window);
-			}
-
-		//update
-		} 
-
-		sfRenderWindow_clear(window, sfBlack);
+			if (event.type == sfEvtClosed){sfRenderWindow_close(window);}
 		
-		if (actualState == MAINMENU) {
+		} 
+		sfRenderWindow_clear(window, sfBlack);
+
+		switch (actualState)
+		{
+		case MAINMENU:
+			
 			updateMenu();
 			displayMenu(window);
-		}
-		else if (actualState == INGAME)  {
-			/*sfMusic_stop(musiquemenu);
-			sfMusic_play(musiquejeu);*/
-			updateGame();
-			displayMap(window, enemie, boule); 
-			displayGame(window, player, boule);
+			break;
+        
+		case INGAME:
+			
+			updateGame(); 
+			displayGame(window, player, boule); 
+			displayMap(window, enemie, boule,score);  
+			printf("%d\n", score);
+			sprintf(scoreStr, "Score: %d", score); 
+			sfText_setString(scoreText, scoreStr);
+			sfRenderWindow_drawText(window, scoreText, NULL); 
+			break;
 
+		case PAUSE:
+			break;
 		}
-		else if (actualState == PAUSE) {
-
-		}
-		else if (actualState == QUIT) {
-
-		}
-
-		sfRenderWindow_display(window);
+		sfVector2f vec = { 10.f, 10.f };
+		
+		
+		sfRenderWindow_display(window); 
 	}
 }

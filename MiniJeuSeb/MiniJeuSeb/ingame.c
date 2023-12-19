@@ -1,12 +1,14 @@
 #include "ingame.h"
 #include <stdlib.h>
 #include <stdio.h>
+
 #include "tools.h"
 #include <math.h>
 
 #define DEFAULT_POS_X 300.f
 #define DEFAULT_POS_Y 500.f
 
+ 
 
 typedef struct Perso Perso;
 struct Perso
@@ -28,12 +30,15 @@ void initGame()
 {
 	
 	boule = sfCircleShape_create();
+
 	player = sfRectangleShape_create();  
 	lalignemagique= sfRectangleShape_create();
 
 	sfRectangleShape_setSize(lalignemagique, (sfVector2f) { 600.f, 5.f });
 	sfRectangleShape_setPosition(lalignemagique, (sfVector2f) { 0, 895.f });
 	sfRectangleShape_setFillColor(lalignemagique, sfWhite);
+
+
 
 	sfCircleShape_setRadius(boule, 20.f);
 	sfCircleShape_setPosition(boule, possBoule);
@@ -43,8 +48,8 @@ void initGame()
 	sfRectangleShape_setSize(player, (sfVector2f) { 70.f, 20.f });
 	sfRectangleShape_setPosition(player,joueur.pos);  
 	sfRectangleShape_setFillColor(player, sfWhite); 
-	sfRectangleShape_setSize(player,joueur.taille);  
 	sfRectangleShape_setOrigin(player, (sfVector2f) { 35.f, 10.f });
+
 
 	sfVector2f tailleEnemie = { 85.f,20.f };
     enemie = sfRectangleShape_create(); 
@@ -69,6 +74,7 @@ void updateGame()
 		joueur.pos.x -= velocity * GetDeltaTime();
 		sfRectangleShape_setPosition(player, joueur.pos);
 	}
+
 
 	if (sfCircleShape_getPosition(boule).x >= 600 - sfCircleShape_getRadius(boule))
 	{
@@ -126,6 +132,7 @@ void updateGame()
 
 	
 
+
 }
 
 void displayGame(sfRenderWindow* _window, sfRectangleShape* _player, sfCircleShape* _boule)
@@ -133,11 +140,9 @@ void displayGame(sfRenderWindow* _window, sfRectangleShape* _player, sfCircleSha
 	sfRenderWindow_drawRectangleShape(_window, _player, NULL);
 	sfRenderWindow_drawCircleShape(_window, _boule, NULL);
 	sfRenderWindow_drawRectangleShape(_window, lalignemagique, NULL);
-}
 
-void displayMap(sfRenderWindow* _window, sfRectangleShape* _enemie, sfCircleShape* _boule)
-{
-	char map[7][5] = {
+
+char map[7][5] = {
 		{1,1,1,1,1},
 		{1,1,4,1,1},
 		{1,4,1,4,1},
@@ -147,54 +152,50 @@ void displayMap(sfRenderWindow* _window, sfRectangleShape* _enemie, sfCircleShap
 		{0,0,0,0,0}
 	};
 
+
+void displayMap(sfRenderWindow* _window, sfRectangleShape* _enemie, sfCircleShape* _boule, int* _score1)
+{
+	char* pointeur = map;
 	sfFloatRect enemierect; 
 
-	for (int y = 0; y < 7; y++)
-	{
-		for (int x = 0; x < 5; x++)
-		{
-			sfSprite_setPosition(_enemie, (sfVector2f) { 110 * x + 40, 80 * y + 20 }); 
-			
-			sfFloatRect bouleBox = sfCircleShape_getGlobalBounds(_boule);
-			enemierect = sfRectangleShape_getGlobalBounds(_enemie);
-
-			if (map[y][x] != 0 && sfFloatRect_intersects(&bouleBox, &enemierect, NULL))
-			{
-				int num = 1;
+	  for (int y = 0; y < 7; y++)
+	  {
+	  	for (int x = 0; x < 5; x++)
+	  	{
+	  		sfSprite_setPosition(_enemie, (sfVector2f) { 110 * x + 40, 80 * y + 20 }); 
+	  		
+	  		sfFloatRect bouleBox = sfCircleShape_getGlobalBounds(_boule);
+	  		enemierect = sfRectangleShape_getGlobalBounds(_enemie);
+	  
+	  		if (map[y][x] != 0 && sfFloatRect_intersects(&bouleBox, &enemierect, NULL)) 
+	  		{
 				circleVel.y = -circleVel.y;
-				printf("Collision %d \n", num++);
-
-				// "Supprimer" le rectangle touché en le marquant comme vide (0)
-				map[y][x] = 0;
-			}
-			
-			if (map[y][x] == 1)
-			{
-				sfRectangleShape_setFillColor(_enemie, sfWhite);
-		        sfRenderWindow_drawRectangleShape(_window, _enemie, NULL);
-			}
-			else if (map[y][x] == 2) 
-			{
-				sfRectangleShape_setFillColor(_enemie, sfRed);
-				sfRenderWindow_drawRectangleShape(_window, _enemie, NULL);
-			}
-			else if (map[y][x] == 3)
-			{
-				sfRectangleShape_setFillColor(_enemie, sfBlue); 
-				sfRenderWindow_drawRectangleShape(_window, _enemie, NULL);
-			}
-			else if (map[y][x] == 4)
-			{
-				sfRectangleShape_setFillColor(_enemie, sfYellow);
-				sfRenderWindow_drawRectangleShape(_window, _enemie, NULL);
-			}
-
-		
-
-		}
-	}
-
-	
-
+				_score1 += 1;                      
+	  			map[y][x] = 0;
+	  		}
+	  		
+	  		if (map[y][x] == 1)
+	  		{
+	  			sfRectangleShape_setFillColor(_enemie, sfWhite);
+	  	        sfRenderWindow_drawRectangleShape(_window, _enemie, NULL);
+	  		}
+	  		else if (map[y][x] == 2) 
+	  		{
+	  			sfRectangleShape_setFillColor(_enemie, sfRed);
+	  			sfRenderWindow_drawRectangleShape(_window, _enemie, NULL);
+	  		}
+	  		else if (map[y][x] == 3)
+	  		{
+	  			sfRectangleShape_setFillColor(_enemie, sfBlue); 
+	  			sfRenderWindow_drawRectangleShape(_window, _enemie, NULL);
+	  		}
+	  		else if (map[y][x] == 4)
+	  		{
+	  			sfRectangleShape_setFillColor(_enemie, sfYellow);
+	  			sfRenderWindow_drawRectangleShape(_window, _enemie, NULL);
+	  		}
+	  	}
+	  }
+	  
 }
 
