@@ -81,8 +81,6 @@ void updateGame()
 	possBoule.y += circleVel.y * GetDeltaTime() * 800.f;
 	sfCircleShape_setPosition(boule, possBoule);
 	
-
-
 	if (sfKeyboard_isKeyPressed(sfKeyD) && joueur.pos.x < 530)
 	{
 		joueur.pos.x += velocity * GetDeltaTime();
@@ -94,25 +92,9 @@ void updateGame()
 		sfRectangleShape_setPosition(player, joueur.pos);
 	}
 
-
-	if (sfCircleShape_getPosition(boule).x >= 600 - sfCircleShape_getRadius(boule))
-	{
-		circleVel.x = -circleVel.x;
-	}
-	else if (sfCircleShape_getPosition(boule).x <= 0.f + sfCircleShape_getRadius(boule) + 5.f)
-	{
-		circleVel.x = -circleVel.x;
-	}
-	
-	/*else if (sfCircleShape_getPosition(boule).y >= 900 - 2 * sfCircleShape_getRadius(boule))
-	{
-		circleVel.y = -circleVel.y * GetDeltaTime();
-	}*/
-	else if (sfCircleShape_getPosition(boule).y <= 0.f + sfCircleShape_getRadius(boule) +2.f)
-	{
-		circleVel.y = -circleVel.y;
-	}
-
+	if (sfCircleShape_getPosition(boule).x >= 600 - sfCircleShape_getRadius(boule)){circleVel.x = -circleVel.x;}
+	else if (sfCircleShape_getPosition(boule).x <= 0.f + sfCircleShape_getRadius(boule) + 5.f){circleVel.x = -circleVel.x;}
+	else if (sfCircleShape_getPosition(boule).y <= 0.f + sfCircleShape_getRadius(boule) +2.f){circleVel.y = -circleVel.y;}
 
 	sfFloatRect bouleBox = sfCircleShape_getGlobalBounds(boule);
 	sfFloatRect playerBox = sfRectangleShape_getGlobalBounds(player);
@@ -126,7 +108,6 @@ void updateGame()
 		oujaitaper = (oujaitaper + 1.f)/ 2.f; 
 
 		angle = lerp(15, 165, oujaitaper);
-
 		circleVel = vector2f(- cos(angle * 3.14 / 180), - sin(angle * 3.14 / 180));
 	}
 
@@ -143,9 +124,6 @@ void updateGame()
 
 void displayGame(sfRenderWindow* _window, sfRectangleShape* _player, sfCircleShape* _boule)
 {
-
-	
-
 	renderState.shader = shader;
 	renderState.blendMode = sfBlendAlpha;
 	renderState.transform = sfTransform_Identity;
@@ -153,7 +131,6 @@ void displayGame(sfRenderWindow* _window, sfRectangleShape* _player, sfCircleSha
 
 	sfRenderWindow_drawRectangleShape(_window, _player, NULL);
 	sfRenderWindow_drawCircleShape(_window, _boule, &renderState);
-	
 	sfRenderWindow_drawRectangleShape(_window, lalignemagique, NULL);
 }
 

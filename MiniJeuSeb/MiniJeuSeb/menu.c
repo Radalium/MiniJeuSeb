@@ -5,7 +5,7 @@
 float timermusique = 0.f;
 
 void initMenu()
-{
+{ 
 	sfVector2f scale = { 0.3f, 0.3f };
 	text = sfText_create();
 	sfFont* font = sfFont_createFromFile("../assets/text/cakeroll.ttf");
@@ -20,12 +20,10 @@ void initMenu()
 	sfSprite_setScale(logo, scale);
 	sfSprite_setTexture(logo, texture, sfTrue);
 	sfSprite_setPosition(logo, (sfVector2f) { 135, 100 });
-	
 }
 
 void updateMenu()
 {
-
 	if (actualState = MAINMENU)
 	{
 		if (timermusique > 0.15f)
@@ -35,9 +33,8 @@ void updateMenu()
 		}
 	}
 	else
-	{
-		timermusique += GetDeltaTime();
-	}
+	timermusique += GetDeltaTime();
+	
 	
 	if (sfMouse_isButtonPressed(sfMouseLeft))
 	{
@@ -46,10 +43,8 @@ void updateMenu()
 			sfSound_play(musiquemenu);
 			timermusique = 0.f;
 		}
-
 		actualState = INGAME;
 	}
-
 }
 
 void displayMenu(sfRenderWindow* _window)
