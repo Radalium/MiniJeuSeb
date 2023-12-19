@@ -20,8 +20,18 @@ sfVector2f possBoule = { 300.f,500.f };
 sfVector2f circleVel = { 0.0f, 1.f };
 
 float timer = 0.f;
+
+sfShader* shader; 
+sfRenderStates renderState;
+
 void initGame()
 {
+	shader = sfShader_createFromFile(NULL, NULL, "shader.frag");
+
+	if (!shader) {
+		printf("Erreur lors de la création du shader\n");
+	}
+
 	boule = sfCircleShape_create();
 	player = sfRectangleShape_create();  
 	lalignemagique= sfRectangleShape_create();
@@ -34,6 +44,7 @@ void initGame()
 	sfCircleShape_setPosition(boule, possBoule);
 	sfCircleShape_setFillColor(boule, sfWhite);
 	sfCircleShape_setOrigin(boule, (sfVector2f) { 20.f, 20.f});
+	sfCircleShape_setTexture(boule, NULL, sfTrue);
 
 	sfRectangleShape_setSize(player, (sfVector2f) { 70.f, 20.f });
 	sfRectangleShape_setPosition(player,joueur.pos);  
@@ -60,24 +71,48 @@ void initGame()
 
 void updateGame()
 {
+	timer += GetDeltaTime();
+
+	sfShader_setFloatUniform(shader, "iTime", timer);
+
+	sfShader_setVec2Uniform(shader, "iResolution", vector2f(600.f, 900.f));
+
 	possBoule.x += circleVel.x * GetDeltaTime() * 800.f;
 	possBoule.y += circleVel.y * GetDeltaTime() * 800.f;
 	sfCircleShape_setPosition(boule, possBoule);
 	
-	if (sfKeyboard_isKeyPressed(sfKeyD) && joueur.pos.x < 520)
+
+
+	if (sfKeyboard_isKeyPressed(sfKeyD) && joueur.pos.x < 530)
 	{
 		joueur.pos.x += velocity * GetDeltaTime();
 		sfRectangleShape_setPosition(player, joueur.pos);
 	}
-	else if (sfKeyboard_isKeyPressed(sfKeyQ) && joueur.pos.x > 10)
+	else if (sfKeyboard_isKeyPressed(sfKeyQ) && joueur.pos.x > 70)
 	{
 		joueur.pos.x -= velocity * GetDeltaTime();
 		sfRectangleShape_setPosition(player, joueur.pos);
 	}
 
-	if (sfCircleShape_getPosition(boule).x >= 600 - sfCircleShape_getRadius(boule)){circleVel.x = -circleVel.x;}
-	else if (sfCircleShape_getPosition(boule).x <= 0.f){circleVel.x = -circleVel.x;}
-	else if (sfCircleShape_getPosition(boule).y <= 0.f + sfCircleShape_getRadius(boule)){circleVel.y = -circleVel.y;}
+
+	if (sfCircleShape_getPosition(boule).x >= 600 - sfCircleShape_getRadius(boule))
+	{
+		circleVel.x = -circleVel.x;
+	}
+	else if (sfCircleShape_getPosition(boule).x <= 0.f + sfCircleShape_getRadius(boule) + 5.f)
+	{
+		circleVel.x = -circleVel.x;
+	}
+	
+	/*else if (sfCircleShape_getPosition(boule).y >= 900 - 2 * sfCircleShape_getRadius(boule))
+	{
+		circleVel.y = -circleVel.y * GetDeltaTime();
+	}*/
+	else if (sfCircleShape_getPosition(boule).y <= 0.f + sfCircleShape_getRadius(boule) +2.f)
+	{
+		circleVel.y = -circleVel.y;
+	}
+
 
 	sfFloatRect bouleBox = sfCircleShape_getGlobalBounds(boule);
 	sfFloatRect playerBox = sfRectangleShape_getGlobalBounds(player);
@@ -89,7 +124,9 @@ void updateGame()
 		oujaitaper = (sfCircleShape_getPosition(boule).x  - sfRectangleShape_getPosition(player).x);
 		oujaitaper /= 55.f;
 		oujaitaper = (oujaitaper + 1.f)/ 2.f; 
-		angle = lerp(10, 169, oujaitaper);
+
+		angle = lerp(15, 165, oujaitaper);
+
 		circleVel = vector2f(- cos(angle * 3.14 / 180), - sin(angle * 3.14 / 180));
 	}
 
@@ -106,8 +143,17 @@ void updateGame()
 
 void displayGame(sfRenderWindow* _window, sfRectangleShape* _player, sfCircleShape* _boule)
 {
+
+	
+
+	renderState.shader = shader;
+	renderState.blendMode = sfBlendAlpha;
+	renderState.transform = sfTransform_Identity;
+	renderState.texture = NULL;
+
 	sfRenderWindow_drawRectangleShape(_window, _player, NULL);
-	sfRenderWindow_drawCircleShape(_window, _boule, NULL);
+	sfRenderWindow_drawCircleShape(_window, _boule, &renderState);
+	
 	sfRenderWindow_drawRectangleShape(_window, lalignemagique, NULL);
 }
 

@@ -1,20 +1,14 @@
-uniform sampler2D texture;
-uniform float blur_radius;
+uniform vec2      iResolution;           // viewport resolution (in pixels)
+uniform float     iTime;                 // shader playback time (in seconds)
 
 void main()
 {
-    vec2 offx = vec2(blur_radius, 0.0);
-    vec2 offy = vec2(0.0, blur_radius);
+    // Normalized pixel coordinates (from 0 to 1)
+    vec2 uv = gl_TexCoord[0].xy;
 
-    vec4 pixel = texture2D(texture, gl_TexCoord[0].xy)               * 4.0 +
-                 texture2D(texture, gl_TexCoord[0].xy - offx)        * 2.0 +
-                 texture2D(texture, gl_TexCoord[0].xy + offx)        * 2.0 +
-                 texture2D(texture, gl_TexCoord[0].xy - offy)        * 2.0 +
-                 texture2D(texture, gl_TexCoord[0].xy + offy)        * 2.0 +
-                 texture2D(texture, gl_TexCoord[0].xy - offx - offy) * 1.0 +
-                 texture2D(texture, gl_TexCoord[0].xy - offx + offy) * 1.0 +
-                 texture2D(texture, gl_TexCoord[0].xy + offx - offy) * 1.0 +
-                 texture2D(texture, gl_TexCoord[0].xy + offx + offy) * 1.0;
+    // Time varying pixel color
+    vec3 col = 0.5 + 0.5*cos(iTime+uv.xyx+vec3(0,2,4));
 
-    gl_FragColor =  gl_Color * (pixel / 16.0);
+    // Output to screen
+    gl_FragColor = vec4(col,1.0);
 }
