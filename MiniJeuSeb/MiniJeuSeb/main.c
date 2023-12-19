@@ -5,6 +5,7 @@
 #include "menu.h"
 #include "ingame.h"
 #include "tools.h"
+#include "music.h"
 
 int main() {
 
@@ -14,8 +15,11 @@ int main() {
 
 	sfEvent event;
 	initMenu();
+	initMusique();
 	initTools();
 	initGame();
+	float tiemrmusique = 0.f;
+	
 
 	sfShader* shader = NULL;
 	sfRenderStates renderState;
@@ -69,7 +73,7 @@ int main() {
 			updateMenu();
 			displayMenu(window);
 			break;
-
+        
 		case INGAME:
 			
 			updateGame(); 
