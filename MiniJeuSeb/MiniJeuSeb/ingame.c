@@ -241,6 +241,7 @@ void displayMap(sfRenderWindow* _window, sfRectangleShape* _enemie, sfCircleShap
 				{
 					deplace.circleVel.y = -deplace.circleVel.y;
 					stats.score++;
+					sfSound_play(bounce);
 					map2[y][x] = 0;
 				}
 
