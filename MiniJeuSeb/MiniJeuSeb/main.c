@@ -5,6 +5,7 @@
 #include "menu.h"
 #include "ingame.h"
 #include "tools.h"
+#include "music.h"
 
 int main() {
 
@@ -14,8 +15,11 @@ int main() {
 
 	sfEvent event;
 	initMenu();
+	initMusique();
 	initTools();
 	initGame();
+	float tiemrmusique = 0.f;
+	
 
 	actualState = MAINMENU;
 
@@ -42,6 +46,8 @@ int main() {
 			displayMenu(window);
 		}
 		else if (actualState == INGAME)  {
+			/*sfMusic_stop(musiquemenu);
+			sfMusic_play(musiquejeu);*/
 			updateGame();
 			displayMap(window, enemie, boule); 
 			displayGame(window, player, boule);

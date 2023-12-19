@@ -7,6 +7,8 @@ sfCircleShape* boule;
 
 sfRectangleShape* enemie;
 
+sfRectangleShape* lalignemagique;
+
 sfFloatRect bouleBox;
 
 sfFloatRect playerBox;

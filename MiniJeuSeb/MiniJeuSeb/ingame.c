@@ -1,6 +1,7 @@
 #include "ingame.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include "tools.h"
 
 #define DEFAULT_POS_X 300.f
 #define DEFAULT_POS_Y 500.f
@@ -13,16 +14,24 @@ struct Perso
 	sfVector2f taille;
 }; 
 struct Perso joueur = { 200.f,800.f,70.f,20.f };
-float velocity = 0.1f;
+float velocity = 100.0f;
 float angle = 0.f;
 
 sfVector2f possBoule = { 300.f,500.f };
 sfVector2f circleVel = { 0.1f, 0.1f };
 
+float timer = 0.f;
+
 void initGame()
 {
+	
 	boule = sfCircleShape_create();
 	player = sfRectangleShape_create();  
+	lalignemagique= sfRectangleShape_create();
+
+	sfRectangleShape_setSize(lalignemagique, (sfVector2f) { 600.f, 5.f });
+	sfRectangleShape_setPosition(lalignemagique, (sfVector2f) { 0, 895.f });
+	sfRectangleShape_setFillColor(lalignemagique, sfWhite);
 
 	sfCircleShape_setRadius(boule, 20.f);
 	sfCircleShape_setPosition(boule, possBoule);
@@ -71,6 +80,7 @@ void updateGame()
 
 	sfFloatRect bouleBox = sfCircleShape_getGlobalBounds(boule);
 	sfFloatRect playerBox = sfRectangleShape_getGlobalBounds(player);
+	sfFloatRect lalignemagiquerect = sfRectangleShape_getGlobalBounds(lalignemagique);
 
 
 	if (sfFloatRect_intersects(&bouleBox, &playerBox, NULL))
@@ -78,12 +88,31 @@ void updateGame()
 		circleVel.y = -circleVel.y;
 	}
 
+	
+
+	if (sfFloatRect_intersects(&bouleBox, &lalignemagiquerect, NULL))
+	{
+		possBoule.x = DEFAULT_POS_X;
+		possBoule.y = DEFAULT_POS_Y;
+		sfCircleShape_setPosition(boule, possBoule);
+		if (timer > 1.f)
+		{
+			circleVel.x = -circleVel.x;
+			timer = 0.f;
+		}
+		else
+		{
+			timer += GetDeltaTime();
+		}
+
+	}
 }
 
 void displayGame(sfRenderWindow* _window, sfRectangleShape* _player, sfCircleShape* _boule)
 {
 	sfRenderWindow_drawRectangleShape(_window, _player, NULL);
 	sfRenderWindow_drawCircleShape(_window, _boule, NULL);
+	sfRenderWindow_drawRectangleShape(_window, lalignemagique, NULL);
 }
 
 void displayMap(sfRenderWindow* _window, sfRectangleShape* _enemie, sfCircleShape* _boule)

@@ -1,5 +1,8 @@
 #include "menu.h"
 #include "tools.h"
+#include "music.h"
+
+float timermusique = 0.f;
 
 void initMenu()
 {
@@ -17,11 +20,36 @@ void initMenu()
 	sfSprite_setScale(logo, scale);
 	sfSprite_setTexture(logo, texture, sfTrue);
 	sfSprite_setPosition(logo, (sfVector2f) { 135, 100 });
+	
 }
 
 void updateMenu()
 {
-	if (sfMouse_isButtonPressed(sfMouseLeft)) actualState = INGAME;
+
+	if (actualState = MAINMENU)
+	{
+		if (timermusique > 0.15f)
+		{
+			sfSound_play(musiquemenu);
+			timermusique = 0.f;
+		}
+	}
+	else
+	{
+		timermusique += GetDeltaTime();
+	}
+	
+	if (sfMouse_isButtonPressed(sfMouseLeft))
+	{
+		if (timermusique > 0.15f)
+		{
+			sfSound_play(musiquemenu);
+			timermusique = 0.f;
+		}
+
+		actualState = INGAME;
+	}
+
 }
 
 void displayMenu(sfRenderWindow* _window)
