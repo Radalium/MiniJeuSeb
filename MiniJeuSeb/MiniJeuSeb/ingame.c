@@ -13,14 +13,27 @@ struct Perso {
 	sfVector2f taille;
 }; 
 struct Perso joueur = { 200.f,800.f,70.f,20.f };
-float velocity = 500.0f;
-float angle = 0.f;
 
-sfVector2f possBoule = { 300.f,500.f };
-sfVector2f circleVel = { 0.0f, 1.f };
-sfVector2f futurepos = { 0.f,0.f };
+typedef struct Deplacement Deplacement;
+struct Deplacement {
+	sfVector2f possBoule;
+	sfVector2f circleVel;
+	sfVector2f futurepos;
+	float velocity;
+    float angle;
+	float timer ;
+};
+struct Deplacement deplace = { 300.f,500.f,0.0f, 1.f,0.f,0.f,500.f,0.f,0.f};
 
-float timer = 0.f;
+typedef struct Stats Stats;
+struct Stats
+{
+	int score;
+	int niveau; 
+	char scoreStr[10];
+	char niveauStr[10]; 
+};
+struct Stats stats = { 0,1 }; 
 
 sfShader* shader; 
 sfRenderStates renderState;
@@ -42,7 +55,7 @@ void initGame()
 	sfRectangleShape_setFillColor(lalignemagique, sfWhite);
 
 	sfCircleShape_setRadius(boule, 20.f);
-	sfCircleShape_setPosition(boule, possBoule);
+	sfCircleShape_setPosition(boule, deplace.possBoule);
 	sfCircleShape_setFillColor(boule, sfWhite);
 	sfCircleShape_setOrigin(boule, (sfVector2f) { 20.f, 20.f});
 	sfCircleShape_setTexture(boule, NULL, sfTrue);
@@ -72,48 +85,31 @@ void initGame()
 
 void updateGame()
 {
-	futurepos.x = possBoule.x + circleVel.x * GetDeltaTime() * 800.f;
-	futurepos.y = possBoule.y + circleVel.y * GetDeltaTime() * 800.f;
+	deplace.futurepos.x = deplace.possBoule.x + deplace.circleVel.x * GetDeltaTime() * 800.f;
+	deplace.futurepos.y = deplace.possBoule.y + deplace.circleVel.y * GetDeltaTime() * 800.f;
+	deplace.timer += GetDeltaTime();
 
-	timer += GetDeltaTime();
-
-	sfShader_setFloatUniform(shader, "iTime", timer);
-
+	sfShader_setFloatUniform(shader, "iTime", deplace.timer);
 	sfShader_setVec2Uniform(shader, "iResolution", vector2f(600.f, 900.f));
 
-	possBoule.x += circleVel.x * GetDeltaTime() * 800.f;
-	possBoule.y += circleVel.y * GetDeltaTime() * 800.f;
-	sfCircleShape_setPosition(boule, possBoule);
+	deplace.possBoule.x += deplace.circleVel.x * GetDeltaTime() * 800.f;
+	deplace.possBoule.y += deplace.circleVel.y * GetDeltaTime() * 800.f;
+	sfCircleShape_setPosition(boule, deplace.possBoule);
 	
 	if (sfKeyboard_isKeyPressed(sfKeyD) && joueur.pos.x < 530)
 	{
-		joueur.pos.x += velocity * GetDeltaTime();
+		joueur.pos.x += deplace.velocity * GetDeltaTime();
 		sfRectangleShape_setPosition(player, joueur.pos);
 	}
 	else if (sfKeyboard_isKeyPressed(sfKeyQ) && joueur.pos.x > 70)
 	{
-		joueur.pos.x -= velocity * GetDeltaTime();
+		joueur.pos.x -= deplace.velocity * GetDeltaTime();
 		sfRectangleShape_setPosition(player, joueur.pos);
 	}
 
-	if (futurepos.x >= 600 - sfCircleShape_getRadius(boule))
-	{
-		circleVel.x = -circleVel.x;
-	}
-	else if (futurepos.x <= 0.f + sfCircleShape_getRadius(boule) + 5.f)
-	{
-		circleVel.x = -circleVel.x;
-	}
-	
-	/*else if (sfCircleShape_getPosition(boule).y >= 900 - 2 * sfCircleShape_getRadius(boule))
-	{
-		circleVel.y = -circleVel.y * GetDeltaTime();
-	}*/
-	else if (futurepos.y < 0.f + sfCircleShape_getRadius(boule))
-	{
-		circleVel.y = -circleVel.y;
-	}
-
+	if (deplace.futurepos.x >= 600 - sfCircleShape_getRadius(boule)){deplace.circleVel.x = -deplace.circleVel.x;}
+	else if (deplace.futurepos.x <= 0.f + sfCircleShape_getRadius(boule) + 5.f){deplace.circleVel.x = -deplace.circleVel.x;}
+	else if (deplace.futurepos.y < 0.f + sfCircleShape_getRadius(boule)){deplace.circleVel.y = -deplace.circleVel.y;}
 
 	sfFloatRect bouleBox = sfCircleShape_getGlobalBounds(boule);
 	sfFloatRect playerBox = sfRectangleShape_getGlobalBounds(player);
@@ -126,18 +122,18 @@ void updateGame()
 		oujaitaper /= 55.f;
 		oujaitaper = (oujaitaper + 1.f)/ 2.f; 
 
-		angle = lerp(15, 165, oujaitaper);
-		circleVel = vector2f(- cos(angle * 3.14 / 180), - sin(angle * 3.14 / 180));
+		deplace.angle = lerp(15, 165, oujaitaper);
+		deplace.circleVel = vector2f(- cos(deplace.angle * 3.14 / 180), - sin(deplace.angle * 3.14 / 180));
 	}
 
 	if (sfFloatRect_intersects(&bouleBox, &lalignemagiquerect, NULL))
 	{
-		possBoule.x = DEFAULT_POS_X;
-		possBoule.y = DEFAULT_POS_Y;
-		sfCircleShape_setPosition(boule, possBoule);
+		deplace.possBoule.x = DEFAULT_POS_X;
+		deplace.possBoule.y = DEFAULT_POS_Y;
+		sfCircleShape_setPosition(boule, deplace.possBoule);
 
-		circleVel.x = 0.f;
-		circleVel.y = 1.f;
+		deplace.circleVel.x = 0.f;
+		deplace.circleVel.y = 1.f;
 	}
 }
 
@@ -173,17 +169,12 @@ char map2[7][5] = {
 		{0,0,0,0,0}
 };
 
-int score = 0;
-int niveau = 1; 
-char scoreStr[10];
-char niveauStr[10];
-
 void displayMap(sfRenderWindow* _window, sfRectangleShape* _enemie, sfCircleShape* _boule)
 {
 	char* pointeur = map;
 	sfFloatRect enemierect; 
 	
-	switch (niveau)
+	switch (stats.niveau)
 	{
 	case 1:
 		for (int y = 0; y < 7; y++)
@@ -197,8 +188,8 @@ void displayMap(sfRenderWindow* _window, sfRectangleShape* _enemie, sfCircleShap
 
 				if (map[y][x] != 0 && sfFloatRect_intersects(&bouleBox, &enemierect, NULL))
 				{
-					circleVel.y = -circleVel.y;
-					score++;
+					deplace.circleVel.y = -deplace.circleVel.y;
+					stats.score++;
 					map[y][x] = 0;
 				}
 
@@ -224,7 +215,7 @@ void displayMap(sfRenderWindow* _window, sfRectangleShape* _enemie, sfCircleShap
 				}
 			}
 		}
-		if (score == 25) niveau = 2;
+		if (stats.score == 25) stats.niveau = 2;
 		break;
 
 	case 2:
@@ -239,8 +230,8 @@ void displayMap(sfRenderWindow* _window, sfRectangleShape* _enemie, sfCircleShap
 
 				if (map2[y][x] != 0 && sfFloatRect_intersects(&bouleBox, &enemierect, NULL))
 				{
-					circleVel.y = -circleVel.y;
-					score++;
+					deplace.circleVel.y = -deplace.circleVel.y;
+					stats.score++;
 					map2[y][x] = 0;
 				}
 
@@ -268,10 +259,10 @@ void displayMap(sfRenderWindow* _window, sfRectangleShape* _enemie, sfCircleShap
 		}
 		break;
 	}
-	  sprintf(scoreStr, "Score : %d", score);
-	  sprintf(niveauStr, "Niveau : %d", niveau);  
-	  sfText_setString(scoreText, scoreStr);
-	  sfText_setString(niveauText, niveauStr); 
+	  sprintf(stats.scoreStr, "Score : %d", stats.score);
+	  sprintf(stats.niveauStr, "Niveau : %d", stats.niveau);
+	  sfText_setString(scoreText, stats.scoreStr);
+	  sfText_setString(niveauText, stats.niveauStr);
 	  sfRenderWindow_drawText(_window, scoreText, NULL);
 	  sfRenderWindow_drawText(_window, niveauText, NULL); 
 }
