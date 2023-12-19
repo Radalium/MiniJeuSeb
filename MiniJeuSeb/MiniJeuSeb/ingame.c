@@ -18,6 +18,7 @@ float angle = 0.f;
 
 sfVector2f possBoule = { 300.f,500.f };
 sfVector2f circleVel = { 0.0f, 1.f };
+sfVector2f futurepos = { 0.f,0.f };
 
 float timer = 0.f;
 
@@ -29,7 +30,7 @@ void initGame()
 	shader = sfShader_createFromFile(NULL, NULL, "shader.frag");
 
 	if (!shader) {
-		printf("Erreur lors de la création du shader\n");
+		printf("Erreur lors de la crÃ©ation du shader\n");
 	}
 
 	boule = sfCircleShape_create();
@@ -71,6 +72,9 @@ void initGame()
 
 void updateGame()
 {
+	futurepos.x = possBoule.x + circleVel.x * GetDeltaTime() * 800.f;
+	futurepos.y = possBoule.y + circleVel.y * GetDeltaTime() * 800.f;
+
 	timer += GetDeltaTime();
 
 	sfShader_setFloatUniform(shader, "iTime", timer);
@@ -92,9 +96,24 @@ void updateGame()
 		sfRectangleShape_setPosition(player, joueur.pos);
 	}
 
-	if (sfCircleShape_getPosition(boule).x >= 600 - sfCircleShape_getRadius(boule)){circleVel.x = -circleVel.x;}
-	else if (sfCircleShape_getPosition(boule).x <= 0.f + sfCircleShape_getRadius(boule) + 5.f){circleVel.x = -circleVel.x;}
-	else if (sfCircleShape_getPosition(boule).y <= 0.f + sfCircleShape_getRadius(boule) +2.f){circleVel.y = -circleVel.y;}
+	if (futurepos.x >= 600 - sfCircleShape_getRadius(boule))
+	{
+		circleVel.x = -circleVel.x;
+	}
+	else if (futurepos.x <= 0.f + sfCircleShape_getRadius(boule) + 5.f)
+	{
+		circleVel.x = -circleVel.x;
+	}
+	
+	/*else if (sfCircleShape_getPosition(boule).y >= 900 - 2 * sfCircleShape_getRadius(boule))
+	{
+		circleVel.y = -circleVel.y * GetDeltaTime();
+	}*/
+	else if (futurepos.y < 0.f + sfCircleShape_getRadius(boule))
+	{
+		circleVel.y = -circleVel.y;
+	}
+
 
 	sfFloatRect bouleBox = sfCircleShape_getGlobalBounds(boule);
 	sfFloatRect playerBox = sfRectangleShape_getGlobalBounds(player);
