@@ -43,6 +43,7 @@ void initGame()
 	gagnerText = sfText_create();
 	font = sfFont_createFromFile("../assets/text/Pixel-Regular.ttf");
 	sfText_setFont(gagnerText, font);
+	sfText_setOrigin(gagnerText, (sfVector2f) { 300.f, 450.f });
 	sfText_setPosition(gagnerText, (sfVector2f) { 300.f, 450.f });
 	sfText_setColor(gagnerText, sfWhite);
 	sfText_setCharacterSize(gagnerText, 100);
@@ -168,7 +169,6 @@ void displayGame(sfRenderWindow* _window, sfRectangleShape* _player, sfCircleSha
 	if (stats.score == 52)
 	{
 		sfRenderWindow_drawText(_window, gagnerText, NULL);
-		
 	}
 }
 
