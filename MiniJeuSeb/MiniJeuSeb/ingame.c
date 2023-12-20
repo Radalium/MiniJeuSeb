@@ -70,17 +70,17 @@ void initGame()
 	sfRectangleShape_setSize(enemie, tailleEnemie);  
 
 	scoreText = sfText_create(); 
-	sfFont* font = sfFont_createFromFile("../assets/text/Pixelary.ttf");
+	sfFont* font = sfFont_createFromFile("../assets/text/Pixel-Regular.ttf");
 	sfText_setFont(scoreText, font);
-	sfText_setPosition(scoreText, (sfVector2f) { 20.f, 800.f });
+	sfText_setPosition(scoreText, (sfVector2f) { 20.f, 850.f });
 	sfText_setColor(scoreText, sfWhite);
-	sfText_setCharacterSize(scoreText, 80);
+	sfText_setCharacterSize(scoreText, 30);
 
 	niveauText = sfText_create();
 	sfText_setFont(niveauText, font); 
-	sfText_setPosition(niveauText, (sfVector2f) { 325.f, 800.f }); 
+	sfText_setPosition(niveauText, (sfVector2f) { 365.f, 850.f }); 
 	sfText_setColor(niveauText, sfWhite); 
-	sfText_setCharacterSize(niveauText, 80); 
+	sfText_setCharacterSize(niveauText, 30); 
 }
 
 sfBool isPlaying = sfFalse;
@@ -132,13 +132,14 @@ void updateGame()
 		deplace.angle = lerp(15, 165, oujaitaper);
 		deplace.circleVel = vector2f(- cos(deplace.angle * 3.14 / 180), - sin(deplace.angle * 3.14 / 180));
 	}
+	
 
 	if (sfFloatRect_intersects(&bouleBox, &lalignemagiquerect, NULL))
 	{
 		deplace.possBoule.x = DEFAULT_POS_X;
 		deplace.possBoule.y = DEFAULT_POS_Y;
 		sfCircleShape_setPosition(boule, deplace.possBoule);
-
+		stats.niveau = 1;
 		deplace.circleVel.x = 0.f;
 		deplace.circleVel.y = 1.f;
 	}
@@ -223,6 +224,7 @@ void displayMap(sfRenderWindow* _window, sfRectangleShape* _enemie, sfCircleShap
 			}
 		}
 		if (stats.score == 25) stats.niveau = 2;
+		
 		break;
 
 	case 2:
