@@ -17,7 +17,8 @@ typedef enum states {
 	MAINMENU,
 	INGAME,
 	PAUSE,
-	QUIT
+	QUIT,
+	GAGNER
 }states;
 
 states actualState;
