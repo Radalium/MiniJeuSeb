@@ -31,10 +31,12 @@ struct Stats
 {
 	int score;
 	int niveau; 
-	char scoreStr[10];
-	char niveauStr[10]; 
+	int fails;
+	char scoreStr[20];
+	char niveauStr[20]; 
+	char failsStr[20];
 };
-struct Stats stats = { 0,1 }; 
+struct Stats stats = { 0,1,5 }; 
 
 
 
@@ -50,9 +52,7 @@ void initGame()
 
 
 	shader = sfShader_createFromFile(NULL, NULL, "shader.frag");
-	if (!shader) {
-		printf("Erreur lors de la création du shader\n");
-	}
+	if (!shader) {printf("Erreur lors de la création du shader\n");}
 
 	boule = sfCircleShape_create();
 	player = sfRectangleShape_create();  
@@ -82,19 +82,31 @@ void initGame()
 	sfText_setFont(scoreText, font);
 	sfText_setPosition(scoreText, (sfVector2f) { 20.f, 850.f });
 	sfText_setColor(scoreText, sfWhite);
-	sfText_setCharacterSize(scoreText, 30);
+	sfText_setCharacterSize(scoreText, 20);
 
 	niveauText = sfText_create();
 	sfText_setFont(niveauText, font); 
 	sfText_setPosition(niveauText, (sfVector2f) { 365.f, 850.f }); 
 	sfText_setColor(niveauText, sfWhite); 
-	sfText_setCharacterSize(niveauText, 30); 
+	sfText_setCharacterSize(niveauText, 20); 
+	 
+	failsText = sfText_create(); 
+	sfText_setFont(failsText, font);  
+	sfText_setPosition(failsText, (sfVector2f) { 25.f, 800.f });  
+	sfText_setColor(failsText, sfWhite);  
+	sfText_setCharacterSize(failsText, 20);  
 }
 
 sfBool isPlaying = sfFalse;
 
 void updateGame()
 {
+	if (stats.fails == 0)
+	{
+		actualState = MAINMENU;
+		stats.fails = 5;
+	}
+
 	deplace.futurepos.x = deplace.possBoule.x + deplace.circleVel.x * GetDeltaTime() * 800.f;
 	deplace.futurepos.y = deplace.possBoule.y + deplace.circleVel.y * GetDeltaTime() * 800.f;
 	deplace.timer += GetDeltaTime();
@@ -146,10 +158,10 @@ void updateGame()
 	{
 		deplace.possBoule.x = DEFAULT_POS_X;
 		deplace.possBoule.y = DEFAULT_POS_Y;
-		sfCircleShape_setPosition(boule, deplace.possBoule);
-		stats.niveau = 1;
+		stats.fails -= 1;
 		deplace.circleVel.x = 0.f;
 		deplace.circleVel.y = 1.f;
+		printf("Fails: %d\n", stats.fails);
 	}
 
 }
@@ -205,14 +217,13 @@ void displayMap(sfRenderWindow* _window, sfRectangleShape* _enemie, sfCircleShap
 			for (int x = 0; x < 5; x++)
 			{
 				sfSprite_setPosition(_enemie, (sfVector2f) { 110 * x + 40, 80 * y + 20 });
-
 				sfFloatRect bouleBox = sfCircleShape_getGlobalBounds(_boule);
 				enemierect = sfRectangleShape_getGlobalBounds(_enemie);
 
 				if (map[y][x] != 0 && sfFloatRect_intersects(&bouleBox, &enemierect, NULL))
 				{
 					deplace.circleVel.y = -deplace.circleVel.y;
-					stats.score++;
+					stats.score+= 10;
 					sfSound_play(bounce);
 					map[y][x] = 0;
 				}
@@ -238,8 +249,7 @@ void displayMap(sfRenderWindow* _window, sfRectangleShape* _enemie, sfCircleShap
 				}
 			}
 		}
-		if (stats.score == 25) stats.niveau = 2;
-		
+		if (stats.score == 200) stats.niveau = 2;
 		break;
 
 	case 2:
@@ -255,7 +265,7 @@ void displayMap(sfRenderWindow* _window, sfRectangleShape* _enemie, sfCircleShap
 				if (map2[y][x] != 0 && sfFloatRect_intersects(&bouleBox, &enemierect, NULL))
 				{
 					deplace.circleVel.y = -deplace.circleVel.y;
-					stats.score++;
+					stats.score += 10; 
 					sfSound_play(bounce);
 					map2[y][x] = 0;
 				}
@@ -286,8 +296,11 @@ void displayMap(sfRenderWindow* _window, sfRectangleShape* _enemie, sfCircleShap
 	}
 	  sprintf(stats.scoreStr, "Score : %d", stats.score);
 	  sprintf(stats.niveauStr, "Niveau : %d", stats.niveau);
+	  sprintf(stats.failsStr, "Life : %d", stats.fails); 
 	  sfText_setString(scoreText, stats.scoreStr);
 	  sfText_setString(niveauText, stats.niveauStr);
+	  sfText_setString(failsText, stats.failsStr);  
 	  sfRenderWindow_drawText(_window, scoreText, NULL);
 	  sfRenderWindow_drawText(_window, niveauText, NULL); 
+	  sfRenderWindow_drawText(_window, failsText, NULL);  
 }
