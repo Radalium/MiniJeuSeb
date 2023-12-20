@@ -10,4 +10,3 @@ sfMusic* musiquemenu;
 sfMusic* musiquejeu;
 
 sfSound* bounce;
-sfSound* bounce2;
