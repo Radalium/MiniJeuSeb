@@ -42,7 +42,6 @@ sfRenderStates renderState;
 void initGame()
 {
 	shader = sfShader_createFromFile(NULL, NULL, "shader.frag");
-
 	if (!shader) {
 		printf("Erreur lors de la création du shader\n");
 	}
@@ -201,7 +200,6 @@ void displayMap(sfRenderWindow* _window, sfRectangleShape* _enemie, sfCircleShap
 					sfSound_play(bounce);
 					map[y][x] = 0;
 				}
-
 				if (map[y][x] == 1)
 				{
 					sfRectangleShape_setFillColor(_enemie, sfWhite);

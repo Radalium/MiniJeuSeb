@@ -36,7 +36,6 @@ void updateMenu()
 	else
 	timermusique += GetDeltaTime();
 	
-	
 	if (sfMouse_isButtonPressed(sfMouseLeft))
 	{
 		if (timermusique > 0.15f)

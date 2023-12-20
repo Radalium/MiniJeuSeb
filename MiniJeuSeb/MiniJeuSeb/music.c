@@ -4,7 +4,6 @@ void initMusique()
 {
 	musiquejeu = sfMusic_createFromFile("..//assets/sounds/ingame.ogg");
 	musiquemenu = sfMusic_createFromFile("..//assets/sounds/menu.ogg");
-
 	bounce = sfSound_create();
 	bounce2 = sfSound_create();
 
@@ -21,12 +20,4 @@ void initMusique()
 
 	sfSound_setVolume(bounce, 50);
 	sfSound_setVolume(bounce2, 50);
-}
-
-void updateMusique()
-{
-}
-
-void displayMusique(sfRenderWindow* _window)
-{
 }
