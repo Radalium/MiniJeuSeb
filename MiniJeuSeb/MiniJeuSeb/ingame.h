@@ -8,6 +8,7 @@ sfRectangleShape* lalignemagique;
 sfCircleShape* ghostmaboule;
 sfText* scoreText;
 sfText* niveauText; 
+sfText* failsText;
 
 sfFloatRect bouleBox;
 sfFloatRect playerBox;
