@@ -38,8 +38,6 @@ struct Stats
 };
 struct Stats stats = { 0,1,5 }; 
 
-
-
 void initGame()
 {
 	gagnerText = sfText_create();
@@ -49,7 +47,6 @@ void initGame()
 	sfText_setColor(gagnerText, sfWhite);
 	sfText_setCharacterSize(gagnerText, 100);
 	sfText_setString(gagnerText, "GAGNER");
-
 
 	shader = sfShader_createFromFile(NULL, NULL, "shader.frag");
 	if (!shader) {printf("Erreur lors de la création du shader\n");}
@@ -152,7 +149,6 @@ void updateGame()
 		deplace.angle = lerp(15, 165, oujaitaper);
 		deplace.circleVel = vector2f(- cos(deplace.angle * 3.14 / 180), - sin(deplace.angle * 3.14 / 180));
 	}
-	
 
 	if (sfFloatRect_intersects(&bouleBox, &lalignemagiquerect, NULL) || sfKeyboard_isKeyPressed(sfKeySpace))
 	{
@@ -163,7 +159,6 @@ void updateGame()
 		deplace.circleVel.y = 1.f;
 		printf("Fails: %d\n", stats.fails);
 	}
-
 }
 
 void displayGame(sfRenderWindow* _window, sfRectangleShape* _player, sfCircleShape* _boule)
@@ -177,11 +172,7 @@ void displayGame(sfRenderWindow* _window, sfRectangleShape* _player, sfCircleSha
 	sfRenderWindow_drawCircleShape(_window, _boule, &renderState);
 	sfRenderWindow_drawRectangleShape(_window, lalignemagique, NULL);
 	
-	if (stats.score == 52)
-	{
-		sfRenderWindow_drawText(_window, gagnerText, NULL);
-		
-	}
+	if (stats.score == 470)	sfRenderWindow_drawText(_window, gagnerText, NULL);
 }
 
 char map[7][5] = {

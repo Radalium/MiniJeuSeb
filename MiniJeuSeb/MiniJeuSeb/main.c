@@ -28,8 +28,7 @@ int main()
 		printf("Shader impossible...\n");
 		return EXIT_FAILURE;
 	}
-	else
-	{
+	else{
 		shader = sfShader_createFromFile(/*"hello vert"*/NULL, NULL, "shader.frag");
 		if (shader == NULL) 
 			return EXIT_FAILURE;
