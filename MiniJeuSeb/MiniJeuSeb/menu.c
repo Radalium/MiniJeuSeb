@@ -8,7 +8,7 @@ void initMenu()
 { 
 	sfVector2f scale = { 0.3f, 0.3f };
 	text = sfText_create();
-	sfFont* font = sfFont_createFromFile("../assets/text/cakeroll.ttf");
+	sfFont* font = sfFont_createFromFile("../assets/text/Pixel-Regular.ttf");
 	sfText_setString(text, "Click To Start");
 	sfText_setFont(text, font);
 	sfText_setCharacterSize(text, 50);
