@@ -68,6 +68,10 @@ int main()
 
 		case PAUSE:
 			break;
+		
+		case QUIT:
+			sfRenderWindow_close(window);
+		break;
 		}
 		sfRenderWindow_display(window); 
 	}
