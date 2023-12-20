@@ -15,11 +15,11 @@ sfFloatRect playerBox;
 sfFloatRect enemierect;
 
 sfShader* shader;
-sfRenderStates renderState;
+sfRenderStates renderState;  
 sfText* gagnerText;
 sfFont* font;
 
 void initGame();
 void updateGame(); 
 void displayGame(sfRenderWindow* _window, sfRectangleShape* _player, sfCircleShape* _boule); 
-void displayMap(sfRenderWindow* _window, sfRectangleShape* _enemie, sfCircleShape* _boule);
+void displayMap(sfRenderWindow* _window, sfRectangleShape* _enemie, sfCircleShape* _boule, sfRenderTexture* _renderTexture);

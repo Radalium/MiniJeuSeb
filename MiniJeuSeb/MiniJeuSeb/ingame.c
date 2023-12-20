@@ -43,9 +43,9 @@ void initGame()
 	gagnerText = sfText_create();
 	font = sfFont_createFromFile("../assets/text/Pixel-Regular.ttf");
 	sfText_setFont(gagnerText, font);
-	sfText_setPosition(gagnerText, (sfVector2f) { 300.f, 450.f });
+	sfText_setPosition(gagnerText, (sfVector2f) { 50.f, 450.f });
 	sfText_setColor(gagnerText, sfWhite);
-	sfText_setCharacterSize(gagnerText, 100);
+	sfText_setCharacterSize(gagnerText, 50);
 	sfText_setString(gagnerText, "GAGNER");
 
 	shader = sfShader_createFromFile(NULL, NULL, "shader.frag");
@@ -130,6 +130,16 @@ void updateGame()
 		joueur.pos.x -= deplace.velocity * GetDeltaTime();
 		sfRectangleShape_setPosition(player, joueur.pos);
 	}
+    
+	else if (sfKeyboard_isKeyPressed(sfKeyL))
+	{
+		sfRectangleShape_setSize(player, (sfVector2f) { 90.f, 20.f });
+	}
+
+	else if (sfKeyboard_isKeyPressed(sfKeyM))
+	{
+		sfRectangleShape_setSize(player, (sfVector2f) { 40.f, 20.f });
+	}
 
 	if (deplace.futurepos.x >= 600 - sfCircleShape_getRadius(boule)){deplace.circleVel.x = -deplace.circleVel.x;}
 	else if (deplace.futurepos.x <= 0.f + sfCircleShape_getRadius(boule) + 5.f){deplace.circleVel.x = -deplace.circleVel.x;}
@@ -195,8 +205,9 @@ char map2[7][5] = {
 		{0,0,0,0,0}
 };
 
-void displayMap(sfRenderWindow* _window, sfRectangleShape* _enemie, sfCircleShape* _boule)
+void displayMap(sfRenderWindow* _window, sfRectangleShape* _enemie, sfCircleShape* _boule,sfRenderTexture* _renderTexture)
 {
+	sfRenderTexture_clear(_renderTexture, sfBlack);
 	char* pointeur = map;
 	sfFloatRect enemierect; 
 	
@@ -213,34 +224,46 @@ void displayMap(sfRenderWindow* _window, sfRectangleShape* _enemie, sfCircleShap
 
 				if (map[y][x] != 0 && sfFloatRect_intersects(&bouleBox, &enemierect, NULL))
 				{
+					
 					deplace.circleVel.y = -deplace.circleVel.y;
 					stats.score+= 10;
 					sfSound_play(bounce);
 					map[y][x] = 0;
+					
 				}
 				if (map[y][x] == 1)
 				{
 					sfRectangleShape_setFillColor(_enemie, sfWhite);
-					sfRenderWindow_drawRectangleShape(_window, _enemie, NULL);
+					sfRenderTexture_drawSprite(_renderTexture, _enemie, NULL);
+					sfRenderTexture_display(_renderTexture);
 				}
 				else if (map[y][x] == 2)
 				{
 					sfRectangleShape_setFillColor(_enemie, sfRed);
-					sfRenderWindow_drawRectangleShape(_window, _enemie, NULL);
+					sfRenderTexture_drawSprite(_renderTexture, _enemie, NULL);
+					sfRenderTexture_display(_renderTexture);
 				}
 				else if (map[y][x] == 3)
 				{
 					sfRectangleShape_setFillColor(_enemie, sfBlue);
-					sfRenderWindow_drawRectangleShape(_window, _enemie, NULL);
+					sfRenderTexture_drawSprite(_renderTexture, _enemie, NULL);
+					sfRenderTexture_display(_renderTexture);
 				}
 				else if (map[y][x] == 4)
 				{
 					sfRectangleShape_setFillColor(_enemie, sfYellow);
-					sfRenderWindow_drawRectangleShape(_window, _enemie, NULL);
+					sfRenderTexture_drawSprite(_renderTexture, _enemie, NULL);
+					sfRenderTexture_display(_renderTexture);
 				}
 			}
 		}
-		if (stats.score == 200) stats.niveau = 2;
+		if (stats.score == 200)
+		{
+			deplace.possBoule.x = DEFAULT_POS_X; 
+			deplace.possBoule.y = DEFAULT_POS_Y; 
+			stats.niveau = 2;
+		}
+
 		break;
 
 	case 2:
@@ -264,22 +287,29 @@ void displayMap(sfRenderWindow* _window, sfRectangleShape* _enemie, sfCircleShap
 				if (map2[y][x] == 1)
 				{
 					sfRectangleShape_setFillColor(_enemie, sfWhite);
-					sfRenderWindow_drawRectangleShape(_window, _enemie, NULL);
+					sfRenderTexture_drawSprite(_renderTexture, _enemie, NULL);
+					sfRenderTexture_display(_renderTexture);
 				}
 				else if (map2[y][x] == 2)
 				{
 					sfRectangleShape_setFillColor(_enemie, sfRed);
-					sfRenderWindow_drawRectangleShape(_window, _enemie, NULL);
+					sfRenderTexture_drawSprite(_renderTexture, _enemie, NULL);
+					sfRenderTexture_display(_renderTexture);
 				}
 				else if (map2[y][x] == 3)
 				{
 					sfRectangleShape_setFillColor(_enemie, sfBlue);
-					sfRenderWindow_drawRectangleShape(_window, _enemie, NULL);
+					sfRenderTexture_drawSprite(_renderTexture, _enemie, NULL);
+					sfRenderTexture_display(_renderTexture);
+
 				}
 				else if (map2[y][x] == 4)
 				{
 					sfRectangleShape_setFillColor(_enemie, sfYellow);
-					sfRenderWindow_drawRectangleShape(_window, _enemie, NULL);
+					sfRenderTexture_drawSprite(_renderTexture, _enemie, NULL); 
+					sfRenderTexture_display(_renderTexture); 
+
+					//sfRenderWindow_drawRectangleShape(_window, _enemie, NULL);
 				}
 			}
 		}
@@ -291,7 +321,9 @@ void displayMap(sfRenderWindow* _window, sfRectangleShape* _enemie, sfCircleShap
 	  sfText_setString(scoreText, stats.scoreStr);
 	  sfText_setString(niveauText, stats.niveauStr);
 	  sfText_setString(failsText, stats.failsStr);  
-	  sfRenderWindow_drawText(_window, scoreText, NULL);
+	  sfRenderWindow_drawText(_window, scoreText, NULL); 
 	  sfRenderWindow_drawText(_window, niveauText, NULL); 
 	  sfRenderWindow_drawText(_window, failsText, NULL);  
+
+	  
 }

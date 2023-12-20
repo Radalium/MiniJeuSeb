@@ -13,7 +13,8 @@ int main()
 	sfVideoMode mode = { 600, 900, 32 };
 	sfRenderWindow* window;
 	window = sfRenderWindow_create(mode, "Foxo Invader - Made By Radalium & Renard100suel", sfDefaultStyle, NULL);
-	
+	sfRenderTexture* renderTexture = sfRenderTexture_create(600, 900, sfFalse); 
+
 	initMusique();
 	initMenu();
 	initTools();
@@ -49,6 +50,7 @@ int main()
 			if (event.type == sfEvtClosed){sfRenderWindow_close(window);}
 		} 
 		sfRenderWindow_clear(window, sfBlack);
+		
 
 		switch (actualState)
 		{
@@ -59,10 +61,17 @@ int main()
 			break;
         
 		case INGAME:
-			sfMusic_stop(musiquemenu);
-			updateGame(); 
+			
+			sfTexture* texture1 = sfRenderTexture_getTexture(renderTexture); 
+			sfSprite* sprite1 = sfSprite_create(); 
+			sfSprite_setTexture(sprite1, texture1, sfFalse); 
+			sfRenderWindow_drawSprite(window, sprite1, NULL); 
+			sfMusic_stop(musiquemenu); 
+			updateGame();  
 			displayGame(window, player, boule); 
-			displayMap(window, enemie, boule);  
+			displayMap(window, enemie, boule, renderTexture); 
+			
+			
 			break;
 
 		case PAUSE:
@@ -74,4 +83,5 @@ int main()
 		}
 		sfRenderWindow_display(window); 
 	}
+	
 }
