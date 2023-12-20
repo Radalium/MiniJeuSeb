@@ -38,11 +38,19 @@ struct Stats
 };
 struct Stats stats = { 0,1,5 }; 
 
-sfShader* shader; 
-sfRenderStates renderState;
+
 
 void initGame()
 {
+	gagnerText = sfText_create();
+	font = sfFont_createFromFile("../assets/text/Pixel-Regular.ttf");
+	sfText_setFont(gagnerText, font);
+	sfText_setPosition(gagnerText, (sfVector2f) { 300.f, 450.f });
+	sfText_setColor(gagnerText, sfWhite);
+	sfText_setCharacterSize(gagnerText, 100);
+	sfText_setString(gagnerText, "GAGNER");
+
+
 	shader = sfShader_createFromFile(NULL, NULL, "shader.frag");
 	if (!shader) {printf("Erreur lors de la création du shader\n");}
 
@@ -146,7 +154,7 @@ void updateGame()
 	}
 	
 
-	if (sfFloatRect_intersects(&bouleBox, &lalignemagiquerect, NULL))
+	if (sfFloatRect_intersects(&bouleBox, &lalignemagiquerect, NULL) || sfKeyboard_isKeyPressed(sfKeySpace))
 	{
 		deplace.possBoule.x = DEFAULT_POS_X;
 		deplace.possBoule.y = DEFAULT_POS_Y;
@@ -155,6 +163,7 @@ void updateGame()
 		deplace.circleVel.y = 1.f;
 		printf("Fails: %d\n", stats.fails);
 	}
+
 }
 
 void displayGame(sfRenderWindow* _window, sfRectangleShape* _player, sfCircleShape* _boule)
@@ -167,6 +176,12 @@ void displayGame(sfRenderWindow* _window, sfRectangleShape* _player, sfCircleSha
 	sfRenderWindow_drawRectangleShape(_window, _player, NULL);
 	sfRenderWindow_drawCircleShape(_window, _boule, &renderState);
 	sfRenderWindow_drawRectangleShape(_window, lalignemagique, NULL);
+	
+	if (stats.score == 52)
+	{
+		sfRenderWindow_drawText(_window, gagnerText, NULL);
+		
+	}
 }
 
 char map[7][5] = {
@@ -289,4 +304,3 @@ void displayMap(sfRenderWindow* _window, sfRectangleShape* _enemie, sfCircleShap
 	  sfRenderWindow_drawText(_window, niveauText, NULL); 
 	  sfRenderWindow_drawText(_window, failsText, NULL);  
 }
-

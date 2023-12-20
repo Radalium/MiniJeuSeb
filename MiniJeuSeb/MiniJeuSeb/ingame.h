@@ -14,6 +14,11 @@ sfFloatRect bouleBox;
 sfFloatRect playerBox;
 sfFloatRect enemierect;
 
+sfShader* shader;
+sfRenderStates renderState;
+sfText* gagnerText;
+sfFont* font;
+
 void initGame();
 void updateGame(); 
 void displayGame(sfRenderWindow* _window, sfRectangleShape* _player, sfCircleShape* _boule); 
